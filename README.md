@@ -1,2 +1,5 @@
+![GitHub Repo stars](https://img.shields.io/github/stars/NikitaLGit/scriptlinuxlns)
+![GitHub issues](https://img.shields.io/github/issues/NikitaLGit/scriptlinuxlns)
+
 # devops-ntlg-lns
-Repository for netology devops lessons 
+Репозиторий для уроков Нетология DevOps.
