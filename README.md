@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Домашние задания по модулю «Виртуализация и контейнеризация»
 
 В этом репозитории расположены ваши домашние задания к каждой лекции. 
@@ -20,10 +19,9 @@
 5. [Практическое применение Docker.](05-virt-04-docker-in-practice)
 
 6. [ Оркестрация кластером Docker контейнеров на примере Docker Swarm.](05-virt-05-docker-swarm)
-=======
+
 ![GitHub Repo stars](https://img.shields.io/github/stars/NikitaLGit/devops-ntlg-lns)
 ![GitHub issues](https://img.shields.io/github/issues/NikitaLGit/devops-ntlg-lns)
 
 # devops-ntlg-lns
 Репозиторий для уроков Нетология DevOps.
->>>>>>> f2cfcf485b63f8002c8a6e49be0ad6887438588b
