@@ -72,7 +72,7 @@ compute-default-zone: ru-central1-b
 
 После запуска `terraform apply` получаем:
 
-![image](https://github.com/user-attachments/assets/3978bcf3-919f-447e-a258-cd268b744efe)
+<img src="https://github.com/user-attachments/assets/3978bcf3-919f-447e-a258-cd268b744efe" width="750">
 
 ## Задание 3
 
@@ -165,7 +165,7 @@ output "test" {
 
 В выводе получим:
 
-![image](https://github.com/user-attachments/assets/1bffd89a-19e1-4626-befc-6ffd352ca2a0)
+<img src="https://github.com/user-attachments/assets/1bffd89a-19e1-4626-befc-6ffd352ca2a0" width="750">
 
 ## Задание 5
 
@@ -212,7 +212,7 @@ resource "yandex_compute_instance" "database" {
 
 При выполнение `terraform plan` видим, что все аналогично и изменений не будет:
 
-![image](https://github.com/user-attachments/assets/50c946eb-640a-4cd0-b202-0bc24e202744)
+<img src="https://github.com/user-attachments/assets/50c946eb-640a-4cd0-b202-0bc24e202744" width="750">
 
 ## Задание 6
 
@@ -288,22 +288,19 @@ metadata = {
 
 Зайдем в консоль `terraform`:
 
-#### 1.
-Отобразим второй элемент списка `test_list`:
+#### 1. Отобразим второй элемент списка `test_list`:
 ```bash
 > local.test_list[1]
 "staging"
 ```
 
-#### 2.
-Найдем длину списка `test_list`:
+#### 2. Найдем длину списка `test_list`:
 ```bash
 > length(local.test_list)
 3 
 ```
 
-#### 3.
-Отобразим значение ключа `admin` из `map` `test_map`:
+#### 3. Отобразим значение ключа `admin` из `map` `test_map`:
 ```bash
 > local.test_map["admin"]
 "John"
@@ -333,20 +330,20 @@ metadata = {
 
 Создадим через веб клиента шлюз:
 
-![image](https://github.com/user-attachments/assets/7f425333-fbc5-40c6-afbc-9dae4c937dd9)
+<img src="https://github.com/user-attachments/assets/7f425333-fbc5-40c6-afbc-9dae4c937dd9" width="650">
 
 Потом таблицу маршрутизации через шлюз:
 
-![image](https://github.com/user-attachments/assets/24b682dd-ebdc-4f11-904f-ee21b3c3ccd4)
+<img src="https://github.com/user-attachments/assets/24b682dd-ebdc-4f11-904f-ee21b3c3ccd4" width="650">
 
 В сеть добавим таблицу маршрутизации:
 
-![image](https://github.com/user-attachments/assets/d2510eed-8515-4fbc-bc06-b6ff72e5ab55)
+<img src="https://github.com/user-attachments/assets/d2510eed-8515-4fbc-bc06-b6ff72e5ab55" width="650">
 
 Пропишем в машинах `nat=false` (заранее добавили пароли для пользователя `ubuntu`). Для применения запускаем `terraform apply` с ключем `-lock=false`. В машине пропал внешний адрес:
 
-![image](https://github.com/user-attachments/assets/6c46fb87-822d-45d9-b768-8b7a157faf14)
+<img src="https://github.com/user-attachments/assets/6c46fb87-822d-45d9-b768-8b7a157faf14" width="650">
 
 Пинги идут:
 
-![image](https://github.com/user-attachments/assets/e03aa057-52fa-497b-b8af-2e7893c98a31)
+<img src="https://github.com/user-attachments/assets/e03aa057-52fa-497b-b8af-2e7893c98a31" width="650">
