@@ -1,0 +1,27 @@
+{
+  "builders": [
+    {
+      "disk_type": "network-hdd",
+      "folder_id": "",
+      "image_description": "by packer",
+      "image_family": "centos",
+      "image_name": "ubuntu-22-04",
+      "source_image_family": "ubuntu-22-04-lts",
+      "ssh_username": "ubuntu",
+      "subnet_id": "",
+      "token": "",
+      "type": "yandex",
+      "use_ipv4_nat": true,
+      "zone": "ru-central1-a"
+    }
+  ],
+  "provisioners": [
+    {
+      "inline": [
+        "sudo yum -y update",
+        "sudo yum -y install bridge-utils bind-utils iptables curl net-tools tcpdump rsync telnet openssh-server"
+      ],
+      "type": "shell"
+    }
+  ]
+}
