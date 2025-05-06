@@ -2,7 +2,7 @@
 
 Проверим версию `terraform`
 
-![image](https://github.com/user-attachments/assets/19b8b033-8c0f-4e1b-a47a-05a1da28830f)
+<img src="https://github.com/user-attachments/assets/19b8b033-8c0f-4e1b-a47a-05a1da28830f" width="450">
 
 #### 1-3.
 Создадим сервисный аккаунт adminlns. Выпустим ключ. Проверим:
@@ -34,7 +34,7 @@ compute-default-zone: ru-central1-b
 
 Меняем с `v4` на `v3` (всего 3 варианта платформы в YC) и неправильно написано `standard`, а не `standart`. Ниже документация YC по платформам:
 
-![image](https://github.com/user-attachments/assets/af2c6ec6-a097-4137-9c17-3712a8feb18a)
+<img src="https://github.com/user-attachments/assets/af2c6ec6-a097-4137-9c17-3712a8feb18a" width="550">
 
 Теперь ошибка:
 
@@ -43,15 +43,16 @@ compute-default-zone: ru-central1-b
 Указан параметр `Гарантированная доля vCPU` в  `5%`, разрешено только `20` `50` или `100`. меняем на `20`.
 Дальше ошибка по ядрам. Указано `1`. нужно выбрать `2` или `4`. Выбираем `2`. После исправлений код рабоотает:
 
-![image](https://github.com/user-attachments/assets/b5a535f6-3619-49fd-a427-31a7356a1edb)
+<img src="https://github.com/user-attachments/assets/b5a535f6-3619-49fd-a427-31a7356a1edb" width="550">
+
 ![image](https://github.com/user-attachments/assets/95e965a5-dedb-45df-961d-d7f43f1fa9f4)
 
 #### 5.
 Зайдем в машину:
 
-![image](https://github.com/user-attachments/assets/684e9025-c3ab-44dd-acd8-68f4061b71e9)
-![image](https://github.com/user-attachments/assets/3da21906-d8f1-4fee-91f7-8b2af285bae9)
-![image](https://github.com/user-attachments/assets/8010bda3-1603-4bfc-b23c-3385298a95ff)
+<img src="https://github.com/user-attachments/assets/684e9025-c3ab-44dd-acd8-68f4061b71e9" width="550">
+<img src="https://github.com/user-attachments/assets/3da21906-d8f1-4fee-91f7-8b2af285bae9" width="550">
+<img src="https://github.com/user-attachments/assets/8010bda3-1603-4bfc-b23c-3385298a95ff" width="550">
 
 > [!TIP]
 > `preemptible = true` – указывает на то, чтот машина будет прерываемой. Это сильно сэкономит ресурсы.
@@ -63,11 +64,11 @@ compute-default-zone: ru-central1-b
 Заменим весь хардкод в указанных ресурсах на переменные.
 Файл объявления переменных:
 
-![image](https://github.com/user-attachments/assets/3f422680-aeb2-423e-b5bf-bfecf243bb80)
+<img src="https://github.com/user-attachments/assets/3f422680-aeb2-423e-b5bf-bfecf243bb80" width="450">
 
 Измененный файл `main.tf`:
 
-![image](https://github.com/user-attachments/assets/d6e8b2e7-1144-430a-990d-6097357e93c4)
+<img src="https://github.com/user-attachments/assets/d6e8b2e7-1144-430a-990d-6097357e93c4" width="450">
 
 После запуска `terraform apply` получаем:
 
