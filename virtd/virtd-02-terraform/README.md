@@ -272,3 +272,81 @@ variable "metadata_base" {
 }
 ```
 
+Параметр `metadata` теперь выглядит так:
+```yaml
+metadata = {
+    serial-port-enable = var.metadata_base.serial-port-enable
+    ssh-keys           = "ubuntu:${var.metadata_base.ssh-key}"
+  }
+```
+
+Применим обновления и получим верный исход (В `web` поменяли процесс и `% vcpu` понизили с `20` до `5`. в `db` увеличили количесвто ядер с `4` до `2`)
+
+![image](https://github.com/user-attachments/assets/ac7d4d16-9fe8-4a82-8080-a8b65f7dcca0)
+
+## Задание 7
+
+Зайдем в консоль `terraform`:
+
+#### 1.
+Отобразим второй элемент списка `test_list`:
+```bash
+> local.test_list[1]
+"staging"
+```
+
+#### 2.
+Найдем длину списка `test_list`:
+```bash
+> length(local.test_list)
+3 
+```
+
+#### 3.
+Отобразим значение ключа `admin` из `map` `test_map`:
+```bash
+> local.test_map["admin"]
+"John"
+```
+
+#### 4. 
+```bash
+> "${local.test_map["admin"]} is admin for ${local.test_list[2]} server based on OS ${local.servers.stage.image} with ${local.servers.stage.cpu} vcpu, ${local.servers.stage.ram} ram and ${length(local.servers.stage.disks)} virtual disks"
+"John is admin for production server based on OS ubuntu-20-04 with 4 vcpu, 8 ram and 2 virtual disks"
+```
+
+![image](https://github.com/user-attachments/assets/81b119ba-d4ae-43ff-a0c9-b172e742a9d3)
+
+## Задание 8
+
+#### 1.
+не совем понял что создать.
+
+#### 2.
+Добавил код из `8.1` в `locals`. Чтобы получить требуемую строку введем:
+```bash
+> local.test[0].dev1[0]
+"ssh -o 'StrictHostKeyChecking=no' ubuntu@62.84.124.117"
+```
+
+## Задание 9
+
+Создадим через веб клиента шлюз:
+
+![image](https://github.com/user-attachments/assets/7f425333-fbc5-40c6-afbc-9dae4c937dd9)
+
+Потом таблицу маршрутизации через шлюз:
+
+![image](https://github.com/user-attachments/assets/24b682dd-ebdc-4f11-904f-ee21b3c3ccd4)
+
+В сеть добавим таблицу маршрутизации:
+
+![image](https://github.com/user-attachments/assets/d2510eed-8515-4fbc-bc06-b6ff72e5ab55)
+
+Пропишем в машинах `nat=false` (заранее добавили пароли для пользователя `ubuntu`). Для применения запускаем `terraform apply` с ключем `-lock=false`. В машине пропал внешний адрес:
+
+![image](https://github.com/user-attachments/assets/6c46fb87-822d-45d9-b768-8b7a157faf14)
+
+Пинги идут:
+
+![image](https://github.com/user-attachments/assets/e03aa057-52fa-497b-b8af-2e7893c98a31)
