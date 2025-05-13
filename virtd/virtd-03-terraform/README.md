@@ -174,7 +174,7 @@ resource "yandex_compute_instance" "ter3foreach" {
 ![image](https://github.com/user-attachments/assets/4f7b6b3b-73f3-4ee9-8da9-b5970d928d63)
 ![image](https://github.com/user-attachments/assets/59e1f1a7-a87e-4ed3-92ce-034c70c6b4e7)
 
-Чтобы машины из задания `2.`1 создавались после машин `2.2` (ресурс `yandex_compute_instance.ter3foreach`), нужно в ресуры создания вм добавить параметр `depends_on`:
+Чтобы машины из задания `2.1` создавались после машин `2.2` (ресурс `yandex_compute_instance.ter3foreach`), нужно в ресуры создания вм добавить параметр `depends_on`:
 ```yaml
 depends_on = [ yandex_compute_instance.ter3foreach ]
 ```
