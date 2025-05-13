@@ -1,5 +1,0 @@
-folder_id = "b1gntd1fa93tmrgbf3vr"
-cloud_id = "b1gv70mvh8quh0edjcqr"
-default_zone = "ru-central1-b"
-token = "y0__xCjjbSBBxjB3RMgqNPi4RJq822y9fKMbRSBHMfzGHIsNoLKCQ"
-subnet = "e2l0mtgs2sj9ovnhmajl"

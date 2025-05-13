@@ -1,5 +1,4 @@
 resource "yandex_compute_instance" "ter3count" {
-  depends_on = [ yandex_compute_instance.ter3foreach ]
   count = 2
 
   name        = format("ter3count-%02d", count.index + 1)
@@ -32,6 +31,8 @@ resource "yandex_compute_instance" "ter3count" {
 
   metadata = {
     serial-port-enable = var.metadata_base.serial-port-enable
-    ssh-keys           = "ubuntu:${var.metadata_base.ssh-key}"
+    ssh-keys           = "ubuntu:${local.ssh_key}"
   }
+
+  depends_on = [ yandex_compute_instance.ter3foreach ]
 }

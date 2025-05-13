@@ -16,7 +16,7 @@ variable "each_vm" {
     })
     metadata = object({
         serial_port_enable = bool
-        ssh_key            = string
+        ssh_keys           = string
         ssh_user           = string
     })
 }))
@@ -38,7 +38,7 @@ variable "each_vm" {
     }
     metadata = {
         serial_port_enable = true
-        ssh_key            = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKo1PzFWONiyzmkyJFXWIDYAy3zQuyCimmPFTF99eLfY lns@lnsnetol2"
+        ssh_keys      = "None"
         ssh_user           = "ubuntu"
     }
     },
@@ -59,14 +59,14 @@ variable "each_vm" {
     }
     metadata = {
         serial_port_enable = true
-        ssh_key      = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKo1PzFWONiyzmkyJFXWIDYAy3zQuyCimmPFTF99eLfY lns@lnsnetol2"
-        ssh_user           = "replica"
+        ssh_keys      = "None"
+        ssh_user     = "replica"
     }
     }]
 }
 
 resource "yandex_compute_instance" "ter3foreach" {
-    for_each = { for idx, vm in var.each_vm : vm.vm_name => vm }
+    for_each = { for vm in var.each_vm : vm.vm_name => vm }
 
     name = each.value.vm_name
     platform_id = each.value.platform_id
@@ -93,6 +93,6 @@ resource "yandex_compute_instance" "ter3foreach" {
 
     metadata = {
         serial-port-enable = each.value.metadata.serial_port_enable
-        ssh-keys           = "${each.value.metadata.ssh_user}:${each.value.metadata.ssh_key}"
+        ssh-keys           = "${each.value.metadata.ssh_user}:${local.ssh_key}"
     }
 }
