@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/73c2722b-3892-492a-b5ee-bc9d564bb7f4)## Проверим версию `terraform`
+## Проверим версию `terraform`
 
 ![image](https://github.com/user-attachments/assets/1b16ec7c-1646-4c5c-a842-9d3d6d1031ba)
 
