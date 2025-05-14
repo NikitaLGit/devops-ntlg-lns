@@ -285,6 +285,28 @@ resource "local_file" "hosts_cfg" {
 ![image](https://github.com/user-attachments/assets/ed6f19cb-bf49-4bf2-bfe8-62fe263c9bb0)
 
 ## Задание 5
+
+Создадим файл `output.tf`. Напишем в нем:
+```yaml
+output "all_vms" {
+  value = [
+    {webservers = [for i in yandex_compute_instance.ter3count : "\"name\" = \"${i.name}\"\n\"id\" = \"${i.id}\"\n\"fqdn\" = \"${i.fqdn}\""]},
+    {databases = [for i in yandex_compute_instance.ter3foreach : "\"name\" = \"${i.name}\"\n\"id\" = \"${i.id}\"\n\"fqdn\" = \"${i.fqdn}\""]},
+    {storage = ["\"name\" = \"${yandex_compute_instance.storagevm.name}\"\n\"id\" = \"${yandex_compute_instance.storagevm.id}\"\n\"fqdn\" = \"${yandex_compute_instance.storagevm.fqdn}\""]}
+    ]
+}
+```
+
+Запустим
+```yaml
+terraform output all_vms > ./outputresult.cfg
+```
+
+![image](https://github.com/user-attachments/assets/b672455e-7de4-47e1-a138-e9dca29f9b9a)
+
+> [!WARNING]
+> Я не понял, как убрать `EOT` из вывода. `-raw` и `-json` не решают проблему.
+
 ## Задание 6
 ## Задание 7
 ## Задание 8
