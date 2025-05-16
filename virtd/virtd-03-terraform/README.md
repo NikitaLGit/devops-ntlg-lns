@@ -308,6 +308,37 @@ terraform output all_vms > ./outputresult.cfg
 > Я не понял, как убрать `EOT` из вывода. `-raw` и `-json` не решают проблему.
 
 ## Задание 6
+
+Ничего не понял.
+
 ## Задание 7
+
+Не нашел никакой функции.
+
 ## Задание 8
+
+Ошибка около `["nat_ip_address"]`, нет закрывающей `}`. Должно быть `["nat_ip_address"]}`:
+```yaml
+[webservers]
+%{~ for i in webservers ~}
+${i["name"]} ansible_host=${i["network_interface"][0]["nat_ip_address"]} platform_id=${i["platform_id "]}}
+%{~ endfor ~}
+```
+
 ## Задание 9
+
+Для первого варианта применим `for` и `format`: 
+
+```yaml
+[for i in range(1, 100) : format("rc%02d", i)]
+```
+
+Получим верный вывод.
+
+Для второго варианта:
+
+```yaml
+[for i in range(1, 97) : format("rc%02d", i) if !(i % 10 == 0 || i % 10 == 7 || i % 10 == 8 || i % 10 == 9) || i == 19]
+```
+
+Получим верный вывод опять.
