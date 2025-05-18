@@ -105,13 +105,13 @@ sudo snap install terraform-docs
 ```bash
 terraform-docs markdown document ./ > terraform_docs.md
 ```
-Файл (`terraform_docs.md`) получился, но не такой красивый, как на скриншотах:
+Файл [terraform_docs.md](https://github.com/NikitaLGit/devops-ntlg-lns/blob/main/virtd/virtd-04-terraform/terraform_docs.md) получился, но не такой красивый, как на скриншотах:
 
 ![image](https://github.com/user-attachments/assets/8fb12d61-ea40-42bb-9a0c-1b40cd27fba0)
 
 ## Задание 3
 
-Выведем список ресурсов в state
+Выведем список ресурсов в `state`
 
 ![image](https://github.com/user-attachments/assets/9133f7ec-7da1-4e9f-81d3-37f61b2f0456)
 
