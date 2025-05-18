@@ -140,7 +140,266 @@ terraform-docs markdown document ./ > terraform_docs.md
 ![image](https://github.com/user-attachments/assets/8ade2ddd-5217-4c72-8c25-be6b1c8a908a)
 
 ## Задание 4
+
+Создадим 2 папки в проекте: `vpc_dev` и `vpc_prod`
+
+![image](https://github.com/user-attachments/assets/36a69d41-fef5-402b-8241-0e385eacbcf2)
+
+Файл `main.tf` `root` модуля:
+```yaml
+module "vpc_prod" {
+  source       = "./vpc_prod"
+  env_name     = "production"
+  subnets = [
+    { zone = "ru-central1-a", cidr = "10.0.1.0/24" },
+    { zone = "ru-central1-b", cidr = "10.0.2.0/24" },
+    { zone = "ru-central1-d", cidr = "10.0.3.0/24" }, #не с, а d
+  ]
+}
+
+module "vpc_dev" {
+  source    = "./vpc_dev"
+  env_name  = "develop"
+  subnets   = [
+    { zone = "ru-central1-a", cidr = "10.0.1.0/24" },
+  ]
+}
+```
+
+Файл `main.tf` модуля `module "vpc_prod"`
+```yaml
+resource "yandex_vpc_network" "production" {
+  name = var.env_name
+}
+resource "yandex_vpc_subnet" "sub_prod" {
+  for_each = { for i, s in var.subnets: i => s }
+  name = "${var.env_name}-${each.value.zone}"
+  zone = each.value.zone
+  v4_cidr_blocks = [each.value.cidr]
+  network_id     = yandex_vpc_network.production.id
+}
+```
+
+Файл `main.tf` модуля `module "vpc_dev"`
+```yaml
+resource "yandex_vpc_network" "develop" {
+  name = var.env_name
+}
+
+resource "yandex_vpc_subnet" "sub_develop" {
+  for_each = { for i, s in var.subnets: i => s }
+  name = "${var.env_name}-${each.value.zone}"
+  zone = each.value.zone
+  v4_cidr_blocks = [each.value.cidr]
+  network_id     = yandex_vpc_network.develop.id
+}
+```
+
+Файл `outputs.tf` в модулях (на примере модуля `vpc_dev`)
+```yaml
+output "net_id" {
+  value = yandex_vpc_network.develop.id
+}
+output "subnet_id" {
+  value = { for k, s in yandex_vpc_subnet.sub_develop : k => s.id }
+}
+
+output "_name" {
+  value = { for k, s in yandex_vpc_subnet.sub_develop : k => s.name }
+}
+output "zone" {
+  value = { for k, s in yandex_vpc_subnet.sub_develop : k => s.zone }
+}
+output "cidr" {
+  value = { for k, s in yandex_vpc_subnet.sub_develop : k => s.v4_cidr_blocks }
+}
+```
+
+Файл `variables.tf` в модулях (на примере модуля `vpc_dev`)
+```yaml
+variable "env_name" {
+  type        = string
+  default     = "def_develop"
+}
+
+variable "subnets" {
+  type = list(object({
+    zone=string,
+    cidr=string
+    }))
+  default = [{
+    zone = "def_ru-central1-a",
+    cidr = "10.0.100.0/24"
+  }]
+}
+```
+
+Теперь нужно заменить переменные в файле проекта
+```yaml
+subnet_zones   = concat(values(module.vpc_dev.zone), [var.default_sub_b.zone])
+subnet_ids     = concat(values(module.vpc_dev.subnet_id), [yandex_vpc_subnet.develop_b.id])
+network_id     = "${module.vpc_dev.net_id}"
+```
+
+Проверим верность исполнения
+
+![image](https://github.com/user-attachments/assets/c8d9d47e-558e-4a8c-8fc9-3a050b708f42)
+![image](https://github.com/user-attachments/assets/2e102d51-fb6b-45c4-a6a0-aed015e78c97)
+![image](https://github.com/user-attachments/assets/1e589bdf-3600-41d2-b4e3-a2f14d276097)
+
 ## Задание 5
+
+ничего
+
 ## Задание 6
+> [!WARNING]
+> Из модуля предложенного постоянно вылезают ошибки по провайдерам `aws` и `random`
+
+Создал в локальном проекте файл `s3bucket.tf`
+```yaml
+# Создание сервисного аккаунта
+resource "yandex_iam_service_account" "sa" {
+  name = var.s3_conf.service_name
+}
+
+# Назначение роли сервисному аккаунту
+resource "yandex_resourcemanager_folder_iam_member" "sa-admin" {
+  folder_id = var.folder_id
+  role      = var.s3_conf.sa_role
+  member    = "serviceAccount:${yandex_iam_service_account.sa.id}"
+}
+
+# Создание статического ключа доступа
+resource "yandex_iam_service_account_static_access_key" "sa-static-key" {
+  service_account_id = yandex_iam_service_account.sa.id
+  description        = "static access key for object storage"
+}
+
+# Создание бакета с использованием статического ключа
+resource "yandex_storage_bucket" "netology-s3-1g-bucket" {
+  access_key            = yandex_iam_service_account_static_access_key.sa-static-key.access_key
+  secret_key            = yandex_iam_service_account_static_access_key.sa-static-key.secret_key
+  bucket                = var.s3_conf.name
+  max_size              = var.s3_conf.size
+  default_storage_class = var.s3_conf.storage_class
+  anonymous_access_flags {
+    read        = var.s3_conf.flags_read
+    list        = var.s3_conf.flags_list
+    config_read = var.s3_conf.flags_config_read
+  }
+  tags = {
+    tests3key = "tests3value"
+  }
+
+  force_destroy = var.s3_conf.force_destroy
+}
+```
+
+В файле `variables.tf`
+```yaml
+variable "s3_conf" {
+  type = object({
+    service_name = string
+    sa_role      = string
+    name         = string
+    size         = number
+    storage_class = string
+    flags_read        = bool
+    flags_list        = bool
+    flags_config_read = bool
+    force_destroy    = bool
+  })
+  default = {
+    service_name = "s3admin"
+    sa_role      = "storage.admin"
+    name         = "netology-s3-1g-bucket"
+    size         = 1073741824
+    storage_class = "standard"
+    flags_read        = true
+    flags_list        = true
+    flags_config_read = false
+    force_destroy    = true
+  }
+}
+```
+
+Запустим `terraform apply`
+Получим новый сервисный аккаунт и права доступа на созданный бакет.
+
+![image](https://github.com/user-attachments/assets/20aabfea-9a5f-4b2c-b728-69de175ddd60)
+
+Перенес файл в папку `s3bucket`. Туда же вложим файл с переменными. Добавим объявление провайдера. 
+В `root` модуль создадим вызов модуля `s3_create`
+```yaml
+module "s3_create" {
+  source = "./s3bucket"
+
+  token = var.token
+  folder_id = var.folder_id
+  cloud_id = var.cloud_id
+zone = var.default_sub_b.zone
+}
+```
+
 ## Задание 7
+
+Создадим файл `docker-compose.yaml`
+Запустим `docker compose up`
+
+![image](https://github.com/user-attachments/assets/4e5a8835-9d45-4b7b-a3ef-ca0528b27e4c)
+
+Зайдем
+
+![image](https://github.com/user-attachments/assets/4ad858c5-01ee-4bd5-a714-bdf4e1e4d28d)
+
+Создадим нужный секрет
+
+![image](https://github.com/user-attachments/assets/12dc9252-e4df-4b84-b4be-c20859ee3526)
+
+Теперь в `root` модуле создадим файл `vault.tf`
+```yaml
+provider "vault" {
+ address = "http://${var.vault.ip}:${var.vault.port}"
+ skip_tls_verify = var.vault.skip_tls_verify
+ token = var.vault.token_vault
+}
+data "vault_generic_secret" "vault_example"{
+ path = "${var.vault.base_path}/example"
+}
+
+output "vault_example" {
+ value = "${nonsensitive(data.vault_generic_secret.vault_example.data)}"
+} 
+```
+
+Переменная
+```yaml
+variable "vault" {
+   type = object({
+    ip              = string
+    port            = string
+    skip_tls_verify = bool
+    token_vault     = string
+    base_path       = string
+  })
+}
+```
+
+Переменная есть
+
+![image](https://github.com/user-attachments/assets/0c12b5c6-9f72-4a5f-9590-9b7f934a39f1)
+
+В `output` так же появляется
+
+![image](https://github.com/user-attachments/assets/660d51b6-2e8a-4b94-a65f-c20b49ce3549)
+
+Запустим из консоли
+
+![image](https://github.com/user-attachments/assets/1a070510-cf9d-4338-8eb4-7c60e211f4f5)
+
+> [!WARNING]
+> Как передать секрет не понял пока
+
 ## Задание 8
+
+Пока ничего
