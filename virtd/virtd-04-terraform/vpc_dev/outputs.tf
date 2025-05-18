@@ -2,15 +2,15 @@ output "net_id" {
   value = yandex_vpc_network.develop.id
 }
 output "subnet_id" {
-  value = yandex_vpc_subnet.sub_develop.id
+  value = { for k, s in yandex_vpc_subnet.sub_develop : k => s.id }
 }
 
-output "name" {
-  value = yandex_vpc_subnet.sub_develop.name
+output "_name" {
+  value = { for k, s in yandex_vpc_subnet.sub_develop : k => s.name }
 }
 output "zone" {
-  value = yandex_vpc_subnet.sub_develop.zone
+  value = { for k, s in yandex_vpc_subnet.sub_develop : k => s.zone }
 }
 output "cidr" {
-  value = yandex_vpc_subnet.sub_develop.v4_cidr_blocks
+  value = { for k, s in yandex_vpc_subnet.sub_develop : k => s.v4_cidr_blocks }
 }

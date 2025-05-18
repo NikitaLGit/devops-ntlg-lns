@@ -58,6 +58,16 @@ variable "vms_resources" {
     }
   }
 
+variable "vault" {
+   type = object({
+    ip              = string
+    port            = string
+    skip_tls_verify = bool
+    token_vault     = string
+    base_path       = string
+  })
+}
+
 variable "metadata_base" {
   type = map
   default = {
