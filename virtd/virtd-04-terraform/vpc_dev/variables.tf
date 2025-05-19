@@ -1,6 +1,7 @@
 variable "env_name" {
   type        = string
   default     = "def_develop"
+  description = "env_name_parametr"
 }
 
 variable "subnets" {

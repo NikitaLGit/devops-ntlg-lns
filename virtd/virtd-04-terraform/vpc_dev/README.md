@@ -31,7 +31,7 @@ The following input variables are optional (have default values):
 
 ### <a name="input_env_name"></a> [env\_name](#input\_env\_name)
 
-Description: n/a
+Description: env\_name\_parametr
 
 Type: `string`
 
@@ -65,11 +65,11 @@ Default:
 
 The following outputs are exported:
 
-### <a name="output__name"></a> [\_name](#output\_\_name)
+### <a name="output_cidr"></a> [cidr](#output\_cidr)
 
 Description: n/a
 
-### <a name="output_cidr"></a> [cidr](#output\_cidr)
+### <a name="output_name"></a> [name](#output\_name)
 
 Description: n/a
 

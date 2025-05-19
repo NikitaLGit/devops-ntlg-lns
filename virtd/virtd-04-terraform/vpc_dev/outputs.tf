@@ -5,7 +5,7 @@ output "subnet_id" {
   value = { for k, s in yandex_vpc_subnet.sub_develop : k => s.id }
 }
 
-output "_name" {
+output "name" {
   value = { for k, s in yandex_vpc_subnet.sub_develop : k => s.name }
 }
 output "zone" {
