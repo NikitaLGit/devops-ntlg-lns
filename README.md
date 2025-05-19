@@ -1,27 +1,30 @@
-# Домашние задания по модулю «Виртуализация и контейнеризация»
-
-В этом репозитории расположены ваши домашние задания к каждой лекции. 
-
-Обязательными к выполнению являются задачи без указания звездочки. Их выполнение необходимо для получения зачета и диплома о профессиональной переподготовке.
-
-Задачи со звездочкой (*) являются дополнительными задачами и/или задачами повышенной сложности. Они не являются обязательными к выполнению, но помогут вам глубже понять тему.
-
-## Домашние задания по темам
-
-1. [Введение в виртуализацию.](05-virt-01-basics)
-
-2. [Применение принципов IaaC в работе с виртуальными машинами](05-virt-02-iaac)
-
-3. Введение в Docker
-
-4. [Оркестрация группой Docker контейнеров на примере Docker Compose.](05-virt-03-docker-intro)
-
-5. [Практическое применение Docker.](05-virt-04-docker-in-practice)
-
-6. [ Оркестрация кластером Docker контейнеров на примере Docker Swarm.](05-virt-05-docker-swarm)
+# Домашние задания по темам
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/NikitaLGit/devops-ntlg-lns)
 ![GitHub issues](https://img.shields.io/github/issues/NikitaLGit/devops-ntlg-lns)
 
-# devops-ntlg-lns
+## Docker
+1. [Введение в виртуализацию](https://github.com/NikitaLGit/devops-ntlg-lns/tree/terraform-05/virtd/05-virt-01-lns-basics)
+
+2. [Применение принципов IaaC в работе с виртуальными машинами](https://github.com/NikitaLGit/devops-ntlg-lns/tree/terraform-05/virtd/05-virt-02-iaac)
+
+3. [Введение в Docker](https://github.com/NikitaLGit/devops-ntlg-lns/tree/terraform-05/virtd/05-virt-03-lns-docker-intro)
+
+4. [ Оркестрация кластером Docker контейнеров на примере Docker Swarm.](https://github.com/NikitaLGit/devops-ntlg-lns/tree/terraform-05/virtd/05-virtd-06-docker-swarm)
+
+## Terraform
+
+1. [terraform-01](https://github.com/NikitaLGit/devops-ntlg-lns/tree/terraform-05/virtd/virtd-01-terraform)
+   
+2. [terraform-02](https://github.com/NikitaLGit/devops-ntlg-lns/tree/terraform-05/virtd/virtd-02-terraform)
+   
+3. [terraform-03](https://github.com/NikitaLGit/devops-ntlg-lns/tree/terraform-05/virtd/virtd-03-terraform)
+   
+4. [terraform-04](https://github.com/NikitaLGit/devops-ntlg-lns/tree/terraform-05/virtd/virtd-04-terraform)
+   
+5. [terraform-05](https://github.com/NikitaLGit/devops-ntlg-lns/tree/terraform-05/virtd/virtd-05-terraform)
+    
+6. [terraform-06](https://github.com/NikitaLGit/devops-ntlg-lns/tree/terraform-05/virtd/virtd-06-terraform)
+
+## About
 Репозиторий для уроков Нетология DevOps.
