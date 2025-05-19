@@ -7,7 +7,7 @@ terraform {
   required_version = "~>1.9"
 
 backend "s3" {
-    endpoints = {
+  endpoints = {
       s3 = "https://storage.yandexcloud.net"
     }
     bucket = "tfstate-lns-1"
@@ -19,6 +19,8 @@ backend "s3" {
     skip_requesting_account_id  = true # Необходимая опция Terraform для версии 1.6.1 и старше.
     skip_s3_checksum            = true # Необходимая опция при описании бэкенsда для Terraform версии 1.6.3 и старше.
 
+    dynamodb_endpoint = "https://docapi.serverless.yandexcloud.net/ru-central1/b1gv70mvh8quh0edjcqr/etndujbvilthn7u74v52"
+    dynamodb_table = "tfstate-lock"
   }
 }
 

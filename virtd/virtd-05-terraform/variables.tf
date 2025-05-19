@@ -2,16 +2,19 @@
 variable "token" {
   type        = string
   description = "OAuth-token; https://cloud.yandex.ru/docs/iam/concepts/authorization/oauth-token"
+  sensitive = true
 }
 
 variable "cloud_id" {
   type        = string
   description = "https://cloud.yandex.ru/docs/resource-manager/operations/cloud/get-id"
+  sensitive = true
 }
 
 variable "folder_id" {
   type        = string
   description = "https://cloud.yandex.ru/docs/resource-manager/operations/folder/get-id"
+  sensitive = true
 }
 
 variable "default_zone" {
@@ -30,17 +33,3 @@ variable "vpc_name" {
   default     = "develop"
   description = "VPC network&subnet name"
 }
-
-# variable "s3conf" {
-#   type = map(any)
-#   default = {
-#     name = "tfstate-lns-1"
-#     region = "ru-central1"
-#     file_key = "./terraform"
-
-#     skip_region_validation      = true
-#     skip_credentials_validation = true
-#     skip_requesting_account_id  = true
-#     skip_s3_checksum            = true
-#   }
-# }
