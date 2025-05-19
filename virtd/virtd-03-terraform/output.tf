@@ -1,5 +1,7 @@
 output "all_vms" {
   value = [
-    {test = ["platform: instanse_name is ${yandex_compute_instance.ter3foreach[each.key].name};\nfqdn is ${yandex_compute_instance.ter3foreach[each.key].fqdn};\nexternal ip is ${yandex_compute_instance.ter3foreach.network_interface[0][each.key].nat_ip_address}"]}
+    {webservers = [for i in yandex_compute_instance.ter3count : "\"name\" = \"${i.name}\"\n\"id\" = \"${i.id}\"\n\"fqdn\" = \"${i.fqdn}\""]},
+    {databases = [for i in yandex_compute_instance.ter3foreach : "\"name\" = \"${i.name}\"\n\"id\" = \"${i.id}\"\n\"fqdn\" = \"${i.fqdn}\""]},
+    {storage = ["\"name\" = \"${yandex_compute_instance.storagevm.name}\"\n\"id\" = \"${yandex_compute_instance.storagevm.id}\"\n\"fqdn\" = \"${yandex_compute_instance.storagevm.fqdn}\""]}
     ]
 }

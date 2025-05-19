@@ -19,7 +19,7 @@ variable "s3_conf" {
     flags_read        = true
     flags_list        = true
     flags_config_read = false
-    force_destroy    = true
+    force_destroy    = false
   }
 }
 
