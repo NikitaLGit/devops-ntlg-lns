@@ -85,6 +85,7 @@ variable "boot_disk_size" {
 variable "public_ip" {
   type    = bool
   default = false
+  sensitive = true
 }
 
 variable "known_internal_ip" {

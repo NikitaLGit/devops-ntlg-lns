@@ -11,6 +11,4 @@
 # own secret vars store.
 personal.auto.tfvars
 *.tfvars
-
-tf.json
-tf.plan
+!dbcreate.tfvars

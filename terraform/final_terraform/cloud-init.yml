@@ -1,5 +1,7 @@
+#cloud-config
+ssh_pwauth: no
 users:
-  - name: ${metadata_base.ssh_name}
+  - name: ${ssh_name}
     groups: sudo
     shell: /bin/bash
     sudo: ["ALL=(ALL) NOPASSWD:ALL"]
@@ -9,3 +11,4 @@ package_update: true
 package_upgrade: false
 packages:
   - vim
+  - tree

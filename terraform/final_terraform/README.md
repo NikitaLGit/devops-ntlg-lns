@@ -15,10 +15,8 @@ finalter-web-1
 ## Модуль vpc_dev
 создание сети `finalter`
 
-Трех подсетей
+и подсети
 ```yaml
 { zone = "ru-central1-a", cidr = "10.0.10.0/24" }
-{ zone = "ru-central1-b", cidr = "10.0.20.0/24" }
-{ zone = "ru-central1-d", cidr = "10.0.30.0/24" }
 ```
 

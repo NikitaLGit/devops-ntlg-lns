@@ -17,3 +17,7 @@ output "labels" {
 output "network_interface" {
   value = yandex_compute_instance.vm.*.network_interface
 }
+
+output "security_group_id" {
+  value = yandex_vpc_security_group.lns.id
+}
