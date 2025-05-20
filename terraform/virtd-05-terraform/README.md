@@ -169,7 +169,282 @@ terraform init -backend-config="access_key=YCAJE6DAKLu*****************" -backen
 После чего теперь можем выполнить `terraform plan`.
 
 ## Задание 3
+
+Создадим новую ветку `terraform-hotfix` из ветки `terraform-05`:
+
+![image](https://github.com/user-attachments/assets/e8ce1b50-993f-4dfe-96fd-1d5a54d91d02)
+
+Проверим `tflick`:
+> Добавим в провайдера яндекс `требования к версии`, а так же удалим объявление `неиспользуемых переменных`. Ошибка пропадет.
+
+![image](https://github.com/user-attachments/assets/f0c32572-3887-4a08-b4c6-e24c7ba196cf)
+
+Теперь проверим `checkov`:
+Выдвет ошибки из `Задания 1`.
+> [!WARNING]
+> Я не понимаю, почему их 4 и что это за ошибки. Инфы никакой не нашел.
+> 
+> При запуске `checkov`
+> 
+> ```bash
+> docker run --rm -v ${PWD}:/tf bridgecrew/checkov -d /tf
+> ```
+> 
+> Выдает кучу ошибок и потом проверку. Полный лог привел в файле `checkov.md`
+
+Отправим `pull request` - [Ссылка на request](https://github.com/NikitaLGit/devops-ntlg-lns/pull/1)
+
 ## Задание 4
+
+Перепишем файл `variables.tf` и в кажой переменной вставим проверку:
+```yaml
+###cloud vars
+variable "token" {
+  type        = string
+  description = "OAuth-token; https://cloud.yandex.ru/docs/iam/concepts/authorization/oauth-token"
+  sensitive = true
+  validation {
+    condition = length(var.token) >= 32
+    error_message = "Must be at least 32 character long API token."
+  }
+}
+
+variable "cloud_id" {
+  type        = string
+  description = "https://cloud.yandex.ru/docs/resource-manager/operations/cloud/get-id"
+  sensitive = true
+  validation {
+    condition = length(var.cloud_id) == 20
+    error_message = "cloud_id var must be 20 character long"
+  }
+}
+
+variable "folder_id" {
+  type        = string
+  description = "https://cloud.yandex.ru/docs/resource-manager/operations/folder/get-id"
+  sensitive = true
+  validation {
+    condition = length(var.folder_id) == 20
+    error_message = "folder_id var must be 20 character long"
+  }
+}
+
+variable "default_zone" {
+  type        = string
+  default     = "ru-central1-a"
+  description = "https://cloud.yandex.ru/docs/overview/concepts/geo-scope"
+  validation {
+    condition = contains(["ru-central1-a", "ru-central1-b", "ru-central1-d"], var.default_zone)
+    error_message = "Wrong type of zone. Must be 'ru-central1-{a/b/c}'"
+  }
+}
+variable "default_cidr" {
+  type        = set(string)
+  default     = ["10.0.1.0/24"]
+  description = "https://cloud.yandex.ru/docs/vpc/operations/subnet-create"
+  validation {
+    condition = alltrue([
+      for a in var. default_cidr: can(cidrnetmask(a))
+    ])
+    error_message = "All elements must be valid IPv4 CIDR block addresses."
+  }
+}
+
+variable "vpc_name" {
+  type        = string
+  default     = "develop"
+  description = "VPC network & subnet name"
+  validation {
+    condition = length(var.vpc_name) >= 3
+    error_message = "vpc_name var must be 3 or more character long"
+  }
+}
+```
+
+Проверим верность. Не понял как проверить переменную через консоль. Она же задается перед `terraform apply`? Буду делать через конструкцию `terraform plan -var=""`
+
+`var.token`:
+
+![image](https://github.com/user-attachments/assets/1cca0431-80c7-4961-8a36-a01adb825a4a)
+
+`var.cloud_id`:
+
+![image](https://github.com/user-attachments/assets/fe695d2a-48d7-4008-baa8-3121e6266b92)
+
+`var.default_zone`:
+
+![image](https://github.com/user-attachments/assets/09536646-1bcc-40c0-b635-7481f9210f0d)
+
+`var.defautl_cidr. Один ip address {С УКАЗАНИЕМ МАСКИ, БЕЗ НЕЕ ВСЕГДА ОШИБКА СООТВЕТСТВИЯ}`:
+
+![image](https://github.com/user-attachments/assets/c5f0f899-6318-4298-b091-48524ef94ed9)
+
+![image](https://github.com/user-attachments/assets/7cef07df-9702-4674-926a-29138c9f4077)
+
+`var.defautl_cidr. Несколько ip address`:
+
+![image](https://github.com/user-attachments/assets/66cf3583-ca03-47cb-818c-9fdb5762de98)
+
 ## Задание 5
+
+Создадим файл `task5.tf`. В нем пропишем 2 переменные для задания:
+
+```yaml
+variable "lowercase_string" {
+  type = string
+  default = "default string"
+
+  validation {
+    condition = lower(var.lowercase_string) == var.lowercase_string
+    error_message = "String must be only lowercase!"
+  }
+}
+```
+
+Проверим:
+
+![image](https://github.com/user-attachments/assets/28379c72-5a39-4675-b267-ef04b09c6f2e)
+
+Теперь напишем переменную для второй части задания:
+
+```yaml
+variable "onlyonebool" {
+  type = object({
+    bool_a = bool
+    bool_b = bool 
+  })
+  default = {
+    bool_a = false
+    bool_b = false
+  }
+
+  validation {
+    condition = (
+        (var.onlyonebool.bool_a && !var.onlyonebool.bool_b) ||
+        (!var.onlyonebool.bool_a && var.onlyonebool.bool_b)
+    )
+    error_message = "must be only one true and one false"
+  }
+}
+```
+
+![image](https://github.com/user-attachments/assets/c0f2366e-bde5-40c1-9b5a-6388ce40127e)
+
 ## Задание 6
+
+пока нет
+
 ## Задание 7
+
+Так и не понял что значит разделить `root модуль`. Сделал отдельный файл `task7.tf`:
+
+```yaml
+# Создание сервисного аккаунта
+resource "yandex_iam_service_account" "sa" {
+  name = var.s3_conf.service_name
+  description = "test account for task 7"
+}
+
+# Назначение роли сервисному аккаунту
+resource "yandex_resourcemanager_folder_iam_member" "sa-admin" {
+  folder_id = var.folder_id
+  role      = var.s3_conf.sa_role
+  member    = "serviceAccount:${yandex_iam_service_account.sa.id}"
+}
+
+# Создание статического ключа доступа
+resource "yandex_iam_service_account_static_access_key" "sa-static-key" {
+  service_account_id = yandex_iam_service_account.sa.id
+  description        = "static access key for object storage"
+}
+
+# Создание бакета с использованием статического ключа
+resource "yandex_storage_bucket" "netology-s3-1g-bucket" {
+  access_key            = yandex_iam_service_account_static_access_key.sa-static-key.access_key
+  secret_key            = yandex_iam_service_account_static_access_key.sa-static-key.secret_key
+  bucket                = var.s3_conf.name
+  max_size              = var.s3_conf.size
+  default_storage_class = var.s3_conf.storage_class
+  grant {
+    id          = yandex_iam_service_account.sa.id
+    type        = var.s3_conf.type
+    permissions = [var.s3_conf.permissions]
+  }
+  anonymous_access_flags {
+    read        = var.s3_conf.flags_read
+    list        = var.s3_conf.flags_list
+    config_read = var.s3_conf.flags_config_read
+  }
+  tags = {
+    test7key = "test7value"
+  }
+
+  force_destroy = var.s3_conf.force_destroy
+}
+
+# Создание базы данных
+resource "yandex_ydb_database_serverless" "database1" {
+  name                = var.ydb_conf.name
+  folder_id = var.folder_id
+  deletion_protection = var.ydb_conf.deletion_protection
+  location_id = var.ydb_conf.location_id
+
+  serverless_database {
+    enable_throttling_rcu_limit = var.ydb_conf.enable_throttling_rcu_limit
+    provisioned_rcu_limit       = var.ydb_conf.provisioned_rcu_limit
+    storage_size_limit          = var.ydb_conf.storage_size_limit
+    throttling_rcu_limit        = var.ydb_conf.throttling_rcu_limit
+  }
+  labels = {
+    test7 = "test7"
+  }
+}
+```
+
+Переменные:
+
+```yaml
+variable "s3_conf" {
+  type = map(any)
+  default = {
+    service_name = "s3task7"
+    sa_role      = "storage.admin"
+    name         = "netology-lns-s3-task7"
+    size         = 1073741824
+    storage_class = "standard"
+    flags_read        = false
+    flags_list        = false
+    flags_config_read = false
+    force_destroy    = false
+    type        = "CanonicalUser"
+    permissions = "FULL_CONTROL"
+  }
+}
+
+variable "ydb_conf" {
+  type = map(any)
+  default = {
+    name                = "test-sl-task7"
+    deletion_protection = false
+    location_id = "ru-central1"
+    enable_throttling_rcu_limit = false
+    provisioned_rcu_limit       = 10
+    storage_size_limit          = 1
+    throttling_rcu_limit        = 0
+  }
+}
+```
+
+Запустим `terraform apply`
+
+Теперь у нас есть новый `сервисный аккаунт`:
+
+![image](https://github.com/user-attachments/assets/15564413-60c9-4ca9-b984-98386e3b6dec)
+
+Новый `s3backet` в котором есть добавленный новый сервисный аккаунт:
+
+![image](https://github.com/user-attachments/assets/e52438ee-3f27-42d4-9607-7099c2f9ffed)
+
+И новая `база данных`:
+
+![image](https://github.com/user-attachments/assets/dcb8dec6-c87e-4f62-bf62-d28f278d0cb2)
