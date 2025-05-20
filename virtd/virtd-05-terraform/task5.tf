@@ -14,7 +14,7 @@ variable "onlyonebool" {
     bool_b = bool 
   })
   default = {
-    bool_a = false
+    bool_a = true
     bool_b = false
   }
 

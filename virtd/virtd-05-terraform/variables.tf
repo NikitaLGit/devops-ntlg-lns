@@ -59,3 +59,35 @@ variable "vpc_name" {
     error_message = "vpc_name var must be 3 or more character long"
   }
 }
+
+#variables for task 7
+
+variable "s3_conf" {
+  type = map(any)
+  default = {
+    service_name = "s3task7"
+    sa_role      = "storage.admin"
+    name         = "netology-lns-s3-task7"
+    size         = 1073741824
+    storage_class = "standard"
+    flags_read        = false
+    flags_list        = false
+    flags_config_read = false
+    force_destroy    = false
+    type        = "CanonicalUser"
+    permissions = "FULL_CONTROL"
+  }
+}
+
+variable "ydb_conf" {
+  type = map(any)
+  default = {
+    name                = "test-sl-task7"
+    deletion_protection = false
+    location_id = "ru-central1"
+    enable_throttling_rcu_limit = false
+    provisioned_rcu_limit       = 10
+    storage_size_limit          = 1
+    throttling_rcu_limit        = 0
+  }
+}
