@@ -24,7 +24,7 @@
    
 5. [terraform-05](https://github.com/NikitaLGit/devops-ntlg-lns/tree/main/terraform/virtd/virtd-05-terraform)
     
-6. [terraform-06](https://github.com/NikitaLGit/devops-ntlg-lns/tree/main/terraform/virtd/virtd-06-terraform)
+[Финальное задание раздела](https://github.com/NikitaLGit/devops-ntlg-lns/tree/main/terraform/final_terraform)
 
 ## About
 Репозиторий для уроков Нетология DevOps.
