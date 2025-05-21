@@ -1,18 +1,41 @@
+variable "cloud_id" {
+  type = string
+  sensitive = true
+}
+variable "folder_id" {
+  type = string
+  sensitive = true
+}
+variable "zone" {
+  type = string
+}
+
+variable "network_id" {
+  type = string
+  sensitive = true
+}
+variable "security_group_ids" {
+  type = list(string)
+  sensitive = true
+}
+variable "subnet_id" {
+  type = string
+  sensitive = true
+}
+
+
 variable "mysql_clstr_conf" {
     type = map(any)
     default = {
         name                = "mysql-clstr-lns"
         environment         = "PRESTABLE"
-        network_id          = module.vpc_dev.net_id
         version             = "8.0"
-        security_group_ids  = [module.vm_create.security_group_id]
-        deletion_protection = true
+        deletion_protection = false
 
-        resource_preset_id = "s2.micro"
+        resource_preset_id = "b1.medium"
         disk_type_id       = "network-hdd"
         disk_size          = 10
 
-        subnet_id        = "<идентификатор_подсети>"
         assign_public_ip = true
         priority         = 100
         backup_priority  = 100
@@ -31,4 +54,5 @@ variable "mysql_user_conf" {
         name       = string
         password   = string
     })
+    sensitive = true
 }

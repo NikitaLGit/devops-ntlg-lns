@@ -14,7 +14,3 @@ output "zone" {
 output "cidr" {
   value = { for k, s in yandex_vpc_subnet.sub_finalter: k => s.v4_cidr_blocks }
 }
-
-output "yandex_vpc_network_finalter_id" {
-  value = yandex_vpc_network.finalter.id
-}

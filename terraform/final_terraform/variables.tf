@@ -38,3 +38,11 @@ variable "metadata_base" {
     ssh_public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKo1PzFWONiyzmkyJFXWIDYAy3zQuyCimmPFTF99eLfY lns@lnsnetol2"
   }
 }
+
+variable "mysql_user_conf" {
+    type = object({
+        name       = string
+        password   = string
+    })
+    sensitive = true
+}
