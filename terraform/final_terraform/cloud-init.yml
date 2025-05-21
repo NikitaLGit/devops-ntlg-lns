@@ -1,8 +1,13 @@
 #cloud-config
+groups:
+  - docker
+
 ssh_pwauth: no
 users:
   - name: ${ssh_name}
-    groups: sudo
+    groups: 
+    - sudo
+    - docker
     shell: /bin/bash
     sudo: ["ALL=(ALL) NOPASSWD:ALL"]
     ssh_authorized_keys:
@@ -10,5 +15,17 @@ users:
 package_update: true
 package_upgrade: false
 packages:
-  - vim
-  - tree
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg-agent
+  - software-properties-common
+
+# Устанавливаем docker
+runcmd:
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+  - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  - apt-get update -y
+  - apt-get install -y docker-ce docker-ce-cli containerd.io
+  - systemctl start docker
+  - systemctl enable docker

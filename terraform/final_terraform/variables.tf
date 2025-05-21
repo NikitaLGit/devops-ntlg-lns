@@ -20,7 +20,7 @@ variable "vms_resources" {
   type = map
   default = {
       instance_name  = "web"
-      instance_count = 2
+      instance_count = 1
       image_family   = "ubuntu-2004-lts"
       public_ip      = true
     }
