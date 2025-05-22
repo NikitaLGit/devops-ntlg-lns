@@ -1,3 +1,6 @@
+include:
+  - proxy.yaml
+
 version: "3"
 
 x-deploy: &deploy-dev
@@ -40,12 +43,12 @@ services:
       backend:
         ipv4_address: 172.20.0.10
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      # - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_TABLE=${MYSQL_TABLE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_ROOT_HOST="%"
+      # - MYSQL_ROOT_HOST="%"
     restart: on-failure
 
 networks:
