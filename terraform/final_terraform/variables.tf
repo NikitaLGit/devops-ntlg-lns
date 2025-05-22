@@ -16,6 +16,11 @@ variable "vpc_name" {
   description = "VPC network & subnet name"
 }
 
+variable "source_file" {
+  type = string
+  default = "terraform.tfstate"
+}
+
 variable "vms_resources" {
   type = map
   default = {

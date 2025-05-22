@@ -1,0 +1,56 @@
+version: "3"
+
+x-deploy: &deploy-dev
+  deploy:
+    resources:
+      limits:
+        cpus: "1"
+        memory: 512M
+      reservations:
+        memory: 256M
+x-env_file: &env_file
+  env_file:
+    - .env
+
+services:
+  web:
+    <<: [*deploy-dev, *env_file]
+    build:
+      dockerfile: Dockerfile.python
+    image: web_app:latest
+    networks:
+      backend:
+        ipv4_address: 172.20.0.5
+    environment:
+      - DB_NAME=${MYSQL_DATABASE}
+      - DB_TABLE=${MYSQL_TABLE}
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+      - DB_USER=${MYSQL_USER}
+      - DB_HOST=db
+    ports:
+      - "5000:5000"
+    restart: always
+    links:
+      - db
+
+  db:
+    image: mysql:latest
+    <<: [*env_file]
+    networks:
+      backend:
+        ipv4_address: 172.20.0.10
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_TABLE=${MYSQL_TABLE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_HOST="%"
+    restart: on-failure
+
+networks:
+  backend:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
