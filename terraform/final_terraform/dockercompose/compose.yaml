@@ -29,27 +29,10 @@ services:
       - DB_TABLE=${MYSQL_TABLE}
       - DB_PASSWORD=${MYSQL_PASSWORD}
       - DB_USER=${MYSQL_USER}
-      - DB_HOST=db
+      - DB_HOST=${MYSQL_HOST}
     ports:
       - "5000:5000"
     restart: always
-    links:
-      - db
-
-  db:
-    image: mariadb:10.6.4-focal
-    <<: [*env_file]
-    networks:
-      backend:
-        ipv4_address: 172.20.0.10
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_TABLE=${MYSQL_TABLE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_ROOT_HOST="%"
-    restart: on-failure
 
 networks:
   backend:

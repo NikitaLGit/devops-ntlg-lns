@@ -64,35 +64,35 @@ module "vpc_dev" {
 #   file = var.source_file
 # }
 
-# module "vm_create" {
-#   source         = "./vm_create"
-#   env_name       = var.vpc_name
-#   network_id     = module.vpc_dev.net_id
-#   subnet_zones   = values(module.vpc_dev.zone)
-#   subnet_ids     = values(module.vpc_dev.subnet_id)
-#   instance_name  = var.vms_resources.instance_name
-#   instance_count = var.vms_resources.instance_count
-#   image_family   = var.vms_resources.image_family
-#   public_ip      = var.vms_resources.public_ip
+module "vm_create" {
+  source         = "./vm_create"
+  env_name       = var.vpc_name
+  network_id     = module.vpc_dev.net_id
+  subnet_zones   = values(module.vpc_dev.zone)
+  subnet_ids     = values(module.vpc_dev.subnet_id)
+  instance_name  = var.vms_resources.instance_name
+  instance_count = var.vms_resources.instance_count
+  image_family   = var.vms_resources.image_family
+  public_ip      = var.vms_resources.public_ip
   
-#   yandex_vpc_network_finalter_id = module.vpc_dev.net_id
+  yandex_vpc_network_finalter_id = module.vpc_dev.net_id
   
-#   folder_id = var.folder_id
-#   cloud_id = var.cloud_id
-#   zone = var.zone
-#   ssh_public_key = var.metadata_base.ssh_public_key
+  folder_id = var.folder_id
+  cloud_id = var.cloud_id
+  zone = var.zone
+  ssh_public_key = var.metadata_base.ssh_public_key
 
-#   labels = { 
-#     owner   = "n.leonov",
-#     project = "final_terraform"
-#      }
+  labels = { 
+    owner   = "n.leonov",
+    project = "final_terraform"
+     }
 
-#   metadata = {
-#     ssh-keys           = "${var.metadata_base.ssh_name}:${var.metadata_base.ssh_public_key}"
-#     user-data          = data.template_file.cloudinit.rendered
-#     serial-port-enable = var.metadata_base.serial-port-enable
-#   }
-# }
+  metadata = {
+    ssh-keys           = "${var.metadata_base.ssh_name}:${var.metadata_base.ssh_public_key}"
+    user-data          = data.template_file.cloudinit.rendered
+    serial-port-enable = var.metadata_base.serial-port-enable
+  }
+}
 
 # module "mysql_cluster" {
 #   source = "./mysql_cluster"
@@ -119,3 +119,21 @@ data "template_file" "cloudinit" {
     ssh_public_key = var.metadata_base.ssh_public_key
   }
 }
+
+# Пример загрузки удаленного стейта и добавления в root module
+
+# data "terraform_remote_state" "vpc" {
+#   backend = "s3"
+#   config  = {
+#     endpoints = {
+#       s3 = "https://storage.yandexcloud.net"
+#     }
+#     bucket = "<имя_бакета>"
+#     region = "ru-central1"
+#     key    = "<путь_к_файлу_состояния_в_бакете>/<имя_файла_состояния>.tfstate"
+#    }
+#  }
+
+# Например передача id подсети из стейта в локальный стейт в переменную data_test
+
+# data_test = data.terraform_remote_state.vpc.outputs.subnet_id

@@ -16,7 +16,7 @@ resource "yandex_ydb_database_iam_binding" "editor" {
 }
 
 resource "yandex_ydb_table" "lns_table" {
-  path              = "tfstate-lock-lns"
+  path              = "tfstate-lock"
   connection_string = yandex_ydb_database_serverless.lns_ydb.ydb_full_endpoint
 
   column {
@@ -24,11 +24,6 @@ resource "yandex_ydb_table" "lns_table" {
     type     = "Utf8"
     not_null = true
   }
-  column {
-    name     = "Digest"
-    type     = "Uint32"
-    not_null = true
-  }
 
-  primary_key = ["LockID", "Digest"]
+  primary_key = ["LockID"]
 }
