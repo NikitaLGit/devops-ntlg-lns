@@ -37,18 +37,18 @@ services:
       - db
 
   db:
-    image: mysql:latest
+    image: mariadb:10.6.4-focal
     <<: [*env_file]
     networks:
       backend:
         ipv4_address: 172.20.0.10
     environment:
-      # - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_TABLE=${MYSQL_TABLE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      # - MYSQL_ROOT_HOST="%"
+      - MYSQL_ROOT_HOST="%"
     restart: on-failure
 
 networks:

@@ -9,7 +9,7 @@ db_host=os.environ.get('DB_HOST')
 db_user=os.environ.get('DB_USER')
 db_password=os.environ.get('DB_PASSWORD')
 db_database=os.environ.get('DB_NAME')
-# db_table=os.environ.get('DB_TABLE')
+db_table=os.environ.get('DB_TABLE')
 
 # Подключение к базе данных MySQL
 db = mysql.connector.connect(
@@ -22,7 +22,7 @@ cursor = db.cursor()
 
 # SQL-запрос для создания таблицы в БД
 create_table_query = f"""
-CREATE TABLE IF NOT EXISTS {db_database}.request (
+CREATE TABLE IF NOT EXISTS {db_database}.{db_table} (
 id INT AUTO_INCREMENT PRIMARY KEY,
 request_date DATETIME,
 request_ip VARCHAR(255)
@@ -38,7 +38,7 @@ def index():
     # Запись в базу данных
     now = datetime.now()
     current_time = now.strftime("%Y-%m-%d %H:%M:%S")
-    query = f"INSERT INTO request (request_date, request_ip) VALUES (%s, %s)"
+    query = f"INSERT INTO {db_table} (request_date, request_ip) VALUES (%s, %s)"
     values = (current_time, ip_address)
     cursor.execute(query, values)
     db.commit()
