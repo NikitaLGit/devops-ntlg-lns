@@ -1,6 +1,6 @@
 # Краткую документацию по проекту можно найти в [INFO.md](https://github.com/NikitaLGit/devops-ntlg-lns/edit/tftask4/terraform/final_terraform/INFO.md)
 
-* Стейт хранится не локально, а удаленно (в провайдере `main.tf` `root модуля` подключен `backend`, созданный вручную). Включен `state-locking` через `DynamoDB` `YDB`
+* Стейт хранится не локально, а удаленно (в провайдере `main.tf` `root модуля` подключен `backend`, созданный вручную). Включен `state-locking` через `DynamoDB` `YDB`.
 * Хардкода нет, все переменные хранятся в скрытых файлах, которые включены в `ignore` файлы
 
 # Оглавление
