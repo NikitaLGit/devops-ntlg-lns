@@ -16,8 +16,12 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_container_registry"></a> [container\_registry](#module\_container\_registry) | ./container_registry | n/a |
+| <a name="module_mysql_cluster"></a> [mysql\_cluster](#module\_mysql\_cluster) | ./mysql_cluster | n/a |
+| <a name="module_s3bucket"></a> [s3bucket](#module\_s3bucket) | ./s3bucket | n/a |
 | <a name="module_vm_create"></a> [vm\_create](#module\_vm\_create) | ./vm_create | n/a |
 | <a name="module_vpc_dev"></a> [vpc\_dev](#module\_vpc\_dev) | ./vpc_dev | n/a |
+| <a name="module_ydb_dev"></a> [ydb\_dev](#module\_ydb\_dev) | ./ydb_dev | n/a |
 
 ## Resources
 
@@ -33,6 +37,7 @@
 | <a name="input_folder_id"></a> [folder\_id](#input\_folder\_id) | n/a | `string` | n/a | yes |
 | <a name="input_metadata_base"></a> [metadata\_base](#input\_metadata\_base) | n/a | <pre>object({<br/>    ssh_name = string<br/>    serial-port-enable = number<br/>    ssh_public_key = string<br/>  })</pre> | <pre>{<br/>  "serial-port-enable": 1,<br/>  "ssh_name": "default",<br/>  "ssh_public_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKo1PzFWONiyzmkyJFXWIDYAy3zQuyCimmPFTF99eLfY lns@lnsnetol2"<br/>}</pre> | no |
 | <a name="input_mysql_user_conf"></a> [mysql\_user\_conf](#input\_mysql\_user\_conf) | n/a | <pre>object({<br/>        name       = string<br/>        password   = string<br/>    })</pre> | n/a | yes |
+| <a name="input_source_file"></a> [source\_file](#input\_source\_file) | n/a | `string` | `"terraform.tfstate"` | no |
 | <a name="input_vms_resources"></a> [vms\_resources](#input\_vms\_resources) | n/a | `map` | <pre>{<br/>  "image_family": "ubuntu-2004-lts",<br/>  "instance_count": 1,<br/>  "instance_name": "web",<br/>  "public_ip": true<br/>}</pre> | no |
 | <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | VPC network & subnet name | `string` | `"finalter"` | no |
 | <a name="input_zone"></a> [zone](#input\_zone) | n/a | `string` | n/a | yes |
