@@ -277,7 +277,7 @@ runcmd:
 <a id="task3-1"></a>
 > Опишите Docker файл c web-приложением и сохраните контейнер в Container Registry
 
-Приложение хранится в папке [./dockercompose](https://github.com/NikitaLGit/devops-ntlg-lns/edit/tftask4/terraform/final_terraform/dockercomposeREADME.md#%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D0%B9%D1%82%D0%B5-virtual-private-cloud-vpc)
+Приложение хранится в папке [./dockercompose](https://github.com/NikitaLGit/devops-ntlg-lns/tree/tftask4/terraform/final_terraform/dockercompose)
 
 `compsoe.yaml` файл (удален блок с сервисом `db`. Информация хранится в базе данных кластера `MYSQL` от `YC` из [Задания 4](#задание-4) ):
 ```yaml
