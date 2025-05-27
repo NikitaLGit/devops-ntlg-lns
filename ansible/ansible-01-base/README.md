@@ -68,4 +68,26 @@ ansible-playbook -i inventory/prod.yml site.yml --ask-vault-pass
 все ок
 
 ## Задание 9
+```bash
+ansible-doc -t connection -l
+```
+Подойдет плагин local
 
+## Задание 10
+```yaml
+---
+all:
+  children:
+    el:
+      hosts:
+        centos7:
+          ansible_connection: docker
+    deb:
+      hosts:
+        ubuntu:
+          ansible_connection: docker
+    local:
+      hosts:
+        localhost:
+          ansible_connection: local
+```
