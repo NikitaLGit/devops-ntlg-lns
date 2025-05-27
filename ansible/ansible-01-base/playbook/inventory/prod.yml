@@ -1,0 +1,9 @@
+---
+  el:
+    hosts:
+      centos7:
+        ansible_connection: local
+  deb:
+    hosts:
+      ubuntu:
+        ansible_connection: local
