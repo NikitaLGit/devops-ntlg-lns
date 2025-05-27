@@ -11,6 +11,7 @@ terraform {
   }
 required_version = "~>1.9"
 
+# Подключение бакета s3 для удаленного хранения 
 backend "s3" {
   endpoints = {
       s3 = "https://storage.yandexcloud.net"
@@ -22,13 +23,14 @@ backend "s3" {
     skip_region_validation      = true
     skip_credentials_validation = true
     skip_requesting_account_id  = true # Необходимая опция Terraform для версии 1.6.1 и старше.
-    skip_s3_checksum            = true # Необходимая опция при описании бэкенsда для Terraform версии 1.6.3 и старше.
+    skip_s3_checksum            = true # Необходимая опция при описании backend для Terraform версии 1.6.3 и старше.
 
     dynamodb_endpoint = "https://docapi.serverless.yandexcloud.net/ru-central1/b1gv70mvh8quh0edjcqr/etn1d8ghjlnibrt1q69n"
     dynamodb_table = "tfstate-lock"
   }
 }
 
+# Подключение модуля создания сети; подсетей
 module "vpc_dev" {
   source    = "./vpc_dev"
   env_name  = var.vpc_name
@@ -38,31 +40,32 @@ module "vpc_dev" {
   ]
 }
 
-# module "container_registry" {
-#   source = "./container_registry"
+#Подключение модуля создания сети; подсетей
+module "container_registry" {
+  source = "./container_registry"
 
-#   folder_id = var.folder_id
-#   cloud_id = var.cloud_id
-#   zone = var.zone
-# }
+  folder_id = var.folder_id
+  cloud_id = var.cloud_id
+  zone = var.zone
+}
 
-# module "s3bucket" {
-#   source = "./s3bucket"
+module "s3bucket" {
+  source = "./s3bucket"
 
-#   folder_id = var.folder_id
-#   cloud_id = var.cloud_id
-#   zone = var.zone
-#   source_file = var.source_file
-# }
+  folder_id = var.folder_id
+  cloud_id = var.cloud_id
+  zone = var.zone
+  source_file = var.source_file
+}
 
-# module "ydb_dev" {
-#   source = "./ydb_dev"
+module "ydb_dev" {
+  source = "./ydb_dev"
 
-#   folder_id = var.folder_id
-#   cloud_id = var.cloud_id
-#   zone = var.zone
-#   file = var.source_file
-# }
+  folder_id = var.folder_id
+  cloud_id = var.cloud_id
+  zone = var.zone
+  file = var.source_file
+}
 
 module "vm_create" {
   source         = "./vm_create"
@@ -94,22 +97,22 @@ module "vm_create" {
   }
 }
 
-# module "mysql_cluster" {
-#   source = "./mysql_cluster"
+module "mysql_cluster" {
+  source = "./mysql_cluster"
 
-#   folder_id = var.folder_id
-#   cloud_id = var.cloud_id
-#   zone = var.zone
+  folder_id = var.folder_id
+  cloud_id = var.cloud_id
+  zone = var.zone
 
-#   mysql_user_conf = {
-#     name = var.mysql_user_conf.name
-#     password = var.mysql_user_conf.password
-#   }
+  mysql_user_conf = {
+    name = var.mysql_user_conf.name
+    password = var.mysql_user_conf.password
+  }
   
-#   network_id =          module.vpc_dev.net_id
-#   security_group_ids =  [module.vm_create.security_group_id]
-#   subnet_id =           join(",", [for key, value in module.vpc_dev.subnet_id : "${value}"])
-# }
+  network_id =          module.vpc_dev.net_id
+  security_group_ids =  [module.vm_create.security_group_id]
+  subnet_id =           join(",", [for key, value in module.vpc_dev.subnet_id : "${value}"])
+}
 
 data "template_file" "cloudinit" {
   template = file("./cloud-init.yml")
@@ -119,21 +122,3 @@ data "template_file" "cloudinit" {
     ssh_public_key = var.metadata_base.ssh_public_key
   }
 }
-
-# Пример загрузки удаленного стейта и добавления в root module
-
-# data "terraform_remote_state" "vpc" {
-#   backend = "s3"
-#   config  = {
-#     endpoints = {
-#       s3 = "https://storage.yandexcloud.net"
-#     }
-#     bucket = "<имя_бакета>"
-#     region = "ru-central1"
-#     key    = "<путь_к_файлу_состояния_в_бакете>/<имя_файла_состояния>.tfstate"
-#    }
-#  }
-
-# Например передача id подсети из стейта в локальный стейт в переменную data_test
-
-# data_test = data.terraform_remote_state.vpc.outputs.subnet_id
