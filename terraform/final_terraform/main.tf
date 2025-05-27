@@ -40,7 +40,7 @@ module "vpc_dev" {
   ]
 }
 
-#Подключение модуля создания сети; подсетей
+# Подключение модуля создания container registry в YC
 module "container_registry" {
   source = "./container_registry"
 
@@ -49,6 +49,7 @@ module "container_registry" {
   zone = var.zone
 }
 
+# Подключение модуля создания s3bucket в YC для remote state
 module "s3bucket" {
   source = "./s3bucket"
 
@@ -58,6 +59,7 @@ module "s3bucket" {
   source_file = var.source_file
 }
 
+# Подключение модуля создания YDB для state-locking
 module "ydb_dev" {
   source = "./ydb_dev"
 
@@ -67,6 +69,7 @@ module "ydb_dev" {
   file = var.source_file
 }
 
+# Подключение модуля создания VM в любом указаном количестве (instance_count)
 module "vm_create" {
   source         = "./vm_create"
   env_name       = var.vpc_name
@@ -97,6 +100,7 @@ module "vm_create" {
   }
 }
 
+# Подключение модуля создания mysql cluster в YC
 module "mysql_cluster" {
   source = "./mysql_cluster"
 
