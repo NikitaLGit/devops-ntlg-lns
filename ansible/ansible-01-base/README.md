@@ -81,11 +81,11 @@ all:
     el:
       hosts:
         centos7:
-          ansible_connection: docker
+          ansible_connection: local
     deb:
       hosts:
         ubuntu:
-          ansible_connection: docker
+          ansible_connection: local
     local:
       hosts:
         localhost:

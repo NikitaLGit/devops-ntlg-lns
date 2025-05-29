@@ -1,0 +1,30 @@
+version: "3"
+
+x-deploy: &deploy-dev
+  deploy:
+    resources:
+      limits:
+        cpus: "1"
+        memory: 512M
+      reservations:
+        memory: 256M
+
+services:
+  clickhouse-01:
+    <<: [*deploy-dev]
+    build:
+      dockerfile: dockerfile
+    image: centos_lns:latest
+    networks:
+      backend:
+        ipv4_address: 172.20.0.5
+    ports:
+      - "2222:22"
+    restart: always
+
+networks:
+  backend:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
