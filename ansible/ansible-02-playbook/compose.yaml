@@ -10,7 +10,7 @@ x-deploy: &deploy-dev
         memory: 256M
 
 services:
-  clickhouse-01:
+  clickhouse:
     <<: [*deploy-dev]
     build:
       dockerfile: dockerfile
@@ -20,6 +20,21 @@ services:
         ipv4_address: 172.20.0.5
     ports:
       - "2222:22"
+      - "9000:9000"
+      - "8123:8123"
+    restart: always
+
+  vector:
+    <<: [*deploy-dev]
+    build:
+      dockerfile: dockerfile
+    image: centos_lns:latest
+    networks:
+      backend:
+        ipv4_address: 172.20.0.10
+    ports:
+      - "2223:22"
+      - "8686:8686"
     restart: always
 
 networks:

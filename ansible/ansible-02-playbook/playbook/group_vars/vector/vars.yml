@@ -1,0 +1,4 @@
+---
+vector_version: "0.47.0"
+vector_config_path: "/etc/vector/vector.yaml"
+clickhouse_host: "172.20.0.5"

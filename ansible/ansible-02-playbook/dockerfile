@@ -34,4 +34,4 @@ RUN sed -i 's/^#\?PasswordAuthentication .*/PasswordAuthentication yes/' /etc/ss
 
 EXPOSE 22
 
-CMD ["/usr/sbin/sshd", "-D"]
+CMD ["/bin/bash"]

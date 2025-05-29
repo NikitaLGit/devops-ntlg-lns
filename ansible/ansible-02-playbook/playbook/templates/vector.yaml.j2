@@ -1,0 +1,18 @@
+sources:
+    our_log:
+      type: file
+      ignore_older_secs: 600
+      include:
+        - /home/vagrant/logs/*.log
+      read_from: beginning
+sinks:
+    to_clickhouse:
+      type: clickhouse
+      inputs:
+        - our_log
+      database: custom
+      endpoint: http://{{ clickhouse_host }}:8123
+      table: my_table
+      compression: gzip
+      healthcheck: false
+      skip_unknown_fields: true    
