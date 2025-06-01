@@ -1,0 +1,19 @@
+sources:
+  our_log:
+    type: file
+    ignore_older_secs: 600
+    include:
+      - /home/lns/logs/*.log
+    read_from: beginning
+sinks:
+  to_clickhouse:
+    type: clickhouse
+    inputs:
+      - our_log
+    database: vector
+    endpoint: http://{{ clickhouse_host }}:8123
+    table: logs
+    compression: gzip
+    healthcheck: false
+    format: json_each_row
+    skip_unknown_fields: true    

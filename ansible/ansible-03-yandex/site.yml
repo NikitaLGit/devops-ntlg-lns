@@ -1,0 +1,120 @@
+# - name: Install Nginx
+# - name: Install Lighthouse
+- name: Install Clickhouse
+  hosts: clickhouse
+  become: true
+  handlers:
+    - name: Start clickhouse service
+      ansible.builtin.service:
+        name: clickhouse-server
+        state: restarted
+      with_items:
+        - clickhouse-server
+        - clickhouse-server
+        - clickhouse-server
+      loop_control:
+        pause: 3
+      tags:
+        - clickhouse
+        - start service
+
+  tasks:
+    - name: Get clickhouse distrib
+      ansible.builtin.get_url:
+        url: "https://packages.clickhouse.com/deb/pool/main/c/{{ item }}/{{ item }}_{{ clickhouse_version }}_amd64.deb"
+        dest: "./{{ item }}-{{ clickhouse_version }}_amd64.deb"
+        mode: '0644'
+      with_items: "{{ clickhouse_packages }}"
+      tags:
+        - clickhouse
+        - distr
+
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: Install clickhouse packages using dpkg
+      ansible.builtin.command:
+        cmd: "dpkg -i ./{{ item }}-{{ clickhouse_version }}_amd64.deb"
+      with_items: "{{ clickhouse_packages }}"
+      notify: Start clickhouse service
+      changed_when: false
+      tags:
+        - clickhouse
+        - distr
+
+    - name: Flush handlers
+      ansible.builtin.meta: flush_handlers
+      tags:
+        - clickhouse
+        - start service
+
+    - name: Wait for clickhouse-server to be ready
+      ansible.builtin.wait_for:
+        host: localhost
+        port: 9000
+        delay: 10
+        timeout: 300
+      tags:
+        - clickhouse
+        - wait
+
+    - name: Create database
+      ansible.builtin.command: "clickhouse-client -q 'create database logs;'"
+      register: create_db
+      failed_when: create_db.rc != 0 and create_db.rc != 82
+      changed_when: create_db.rc == 0
+      tags:
+        - clickhouse
+        - db
+
+- name: Install Vector
+  hosts: vector
+  become: true
+  handlers:
+    - name: Start vector service
+      ansible.builtin.service:
+        name: vector
+        state: restarted
+      tags:
+        - vector
+        - start service
+
+  tasks:
+    - name: Get vector distrib
+      ansible.builtin.get_url:
+        url: "https://packages.timber.io/vector/0.47.0/vector_{{ vector_version }}-1_amd64.deb"
+        dest: "./vector_{{ vector_version }}-1_amd64.deb"
+        mode: '0644'
+      tags:
+        - vector
+        - distr
+    
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: Install vector packages using dpkg
+      ansible.builtin.command:
+        cmd: "dpkg -i ./vector_{{ vector_version }}-1_amd64.deb"
+      notify: Start vector service
+      changed_when: false
+      tags:
+        - vector
+        - distr
+
+    - name: Deploy vector configuration
+      ansible.builtin.template:
+        src: ./templates/vector.yaml.j2
+        dest: "{{ vector_config_path }}"
+        mode: '0644'
+      notify: Start vector service
+      tags:
+        - vector
+        - config
+
+    - name: Flush handlers
+      ansible.builtin.meta: flush_handlers
+      tags:
+        - vector
+        - start service
