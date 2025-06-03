@@ -2,14 +2,21 @@
 clickhouse:
   hosts:
     clickhouse-01:
-      ansible_host: 158.160.35.0 #temp
-
+      ansible_host: 84.201.131.223
+      ansible_connection: ssh
+      ansible_user: ansible
+      ansible_ssh_private_key_file: /home/lns/.ssh/id_ed25519
 vector:
   hosts:
     vector-01:
-      ansible_host: 51.250.1.239 #temp
-
-# lighthouse:
-#   hosts:
-#     lighthouse-01:
-#       - ansible_host: 3333
+      ansible_host: 84.201.174.14
+      ansible_connection: ssh
+      ansible_user: ansible
+      ansible_ssh_private_key_file: /home/lns/.ssh/id_ed25519
+lighthouse:
+  hosts:
+    lighthouse-01:
+      ansible_host: 62.84.125.11
+      ansible_connection: ssh
+      ansible_user: ansible
+      ansible_ssh_private_key_file: /home/lns/.ssh/id_ed25519

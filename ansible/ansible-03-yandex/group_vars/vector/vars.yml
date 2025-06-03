@@ -1,4 +1,7 @@
 ---
 vector_version: "0.47.0"
-vector_config_path: "/etc/vector/vector.yaml"
-clickhouse_host: "158.160.35.0"
+vector_os_arch: "x86_64"
+vector_workdir: "/tmp/vector"
+vector_os_user: "vector"
+vector_os_group: "vector"
+vector_data_dir: "/var/lib/vector"

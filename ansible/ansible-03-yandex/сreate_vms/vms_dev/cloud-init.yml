@@ -1,0 +1,15 @@
+#cloud-config
+ssh_pwauth: no
+users:
+  - name: ${ssh_name}
+    groups: 
+    - sudo
+    shell: /bin/bash
+    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+    ssh_authorized_keys:
+      - ${ssh_public_key}
+package_update: true
+package_upgrade: false
+packages:
+  - sshpass
+  - wget
