@@ -1,7 +1,7 @@
 ---
 clickhouse_table: "logs_table"
 clickhouse_db: "logs"
-clickhouse_url: "51.250.95.11"
+clickhouse_url: "84.201.131.223"
 vector_version: "0.47.0"
 vector_workdir: "/tmp/vector"
 vector_os_user: "vector"
