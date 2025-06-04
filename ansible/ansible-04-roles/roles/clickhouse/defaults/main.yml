@@ -1,0 +1,4 @@
+---
+clickhouse_version: "22.8.5.29"
+database_name: "logs"
+table_name: "logs_table"

@@ -1,0 +1,60 @@
+---
+- name: Clickhouse | Get clickhouse distrib
+  ansible.builtin.get_url:
+    url: "https://packages.clickhouse.com/deb/pool/main/c/{{ item }}/{{ item }}_{{ clickhouse_version }}_amd64.deb"
+    dest: "./{{ item }}-{{ clickhouse_version }}_amd64.deb"
+    mode: '0644'
+  with_items: "{{ clickhouse_packages }}"
+
+- name: Clickhouse | Install clickhouse packages using dpkg
+  become: true
+  ansible.builtin.command:
+    cmd: "dpkg -i ./{{ item }}-{{ clickhouse_version }}_amd64.deb"
+  with_items: "{{ clickhouse_packages }}"
+  notify: Clickhouse | Start clickhouse service
+  changed_when: false
+  tags:
+    - clickhouse
+    - distr
+
+- name: Clickhouse | Modify Clickhouse config.xml
+  become: true
+  ansible.builtin.replace:
+    backup: true
+    path: "/etc/clickhouse-server/config.xml"
+    regexp: '^    <!-- <listen_host>0.0.0.0</listen_host> -->$'
+    replace: '    <listen_host>0.0.0.0</listen_host>'
+  notify: Clickhouse | Start clickhouse service
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
+
+- name: Clickhouse | Wait for clickhouse-server to become available
+  ansible.builtin.pause:
+    seconds: 10
+    echo: true
+
+- name: Clickhouse | Create database
+  ansible.builtin.command: "clickhouse-client -q 'create database {{ database_name }};'"
+  register: create_db
+  failed_when: create_db.rc != 0 and create_db.rc != 82
+  changed_when: create_db.rc == 0
+  tags:
+    - clickhouse
+    - db
+
+- name: Clickhouse | Create tables for nginx logs
+  ansible.builtin.template:
+    src: templates/nginx_logs_tables.sql.j2
+    dest: /tmp/nginx_logs_tables.sql
+    mode: '0644'
+  tags:
+    - clickhouse
+    - table
+
+- name: Clickhouse | Execute nginx logs tables creation
+  become: true
+  ansible.builtin.shell: "clickhouse-client --multiquery < /tmp/nginx_logs_tables.sql"
+  tags:
+    - clickhouse
+    - table

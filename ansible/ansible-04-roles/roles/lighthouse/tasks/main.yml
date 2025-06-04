@@ -1,0 +1,25 @@
+---
+- name: Lighthouse | Pre-install Nginx & Git client
+  become: true
+  ansible.builtin.apt:
+    name:
+      - nginx
+      - git
+    update_cache: true
+
+- name: Lighthouse | Clone Lighthouse source code by Git
+  become: true
+  ansible.builtin.git:
+    repo: "{{ lighthouse_code_src }}"
+    version: "{{ lighthouse_code_src_version }}"
+    dest: "{{ lighthouse_data_dir }}"
+
+- name: Lighthouse | Prepare nginx config
+  become: true
+  ansible.builtin.template:
+    src: "templates/lighthouse.conf.j2"
+    dest: "/etc/nginx/conf.d/lighthouse.conf"
+    mode: "0644"
+    owner: root
+    group: root
+  notify: Lighthouse | Start Lighthouse service

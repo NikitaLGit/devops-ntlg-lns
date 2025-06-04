@@ -1,0 +1,85 @@
+---
+- name: Create vector work directory
+  ansible.builtin.file:
+    path: "{{ vector_workdir }}"
+    state: directory
+    mode: "0755"
+
+- name: Vector | Get Vector distrib
+  ansible.builtin.get_url:
+    url: "https://packages.timber.io/vector/0.47.0/vector_{{ vector_version }}-1_amd64.deb"
+    dest: "./vector_{{ vector_version }}-1_amd64.deb"
+    mode: '0644'
+  tags:
+    - vector
+    - distr
+
+- name: Update apt cache
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Vector | Unzip Vector archive
+  become: true
+  ansible.builtin.command:
+    cmd: "dpkg -i ./vector_{{ vector_version }}-1_amd64.deb"
+  notify: Vector | Start Vector service
+  changed_when: false
+  tags:
+    - vector
+    - distr
+
+- name: Vector | Check Vector installation
+  ansible.builtin.command: vector --version
+  register: var_vector
+  failed_when: var_vector.rc != 0
+  changed_when: var_vector.rc == 0
+
+- name: Vector | Create Vector etc directory
+  become: true
+  ansible.builtin.file:
+    path: "/etc/vector"
+    state: directory
+    mode: "0755"
+
+- name: Vector | Create Vector config vector.yaml
+  become: true
+  ansible.builtin.template:
+    src: "templates/vector.yaml.j2"
+    dest: "/etc/vector/vector.yaml"
+    mode: "0644"
+    owner: root
+    group: root
+
+- name: Vector | Modify Vector.service file ExecStart
+  become: true
+  ansible.builtin.replace:
+    backup: true
+    path: /lib/systemd/system/vector.service
+    regexp: ^ExecStartPre=/usr/bin/vector validate$
+    replace: ExecStartPre=/usr/bin/vector validate --config-yaml /etc/vector/vector.yaml
+  notify: Vector | Start Vector service
+
+- name: Vector | Modify Vector.service file ExecStartPre
+  become: true
+  ansible.builtin.replace:
+    backup: true
+    path: /lib/systemd/system/vector.service
+    regexp: ^ExecStart=/usr/bin/vector$
+    replace: ExecStart=/usr/bin/vector --config-yaml /etc/vector/vector.yaml
+  notify: Vector | Start Vector service
+
+- name: Vector | Create user vector
+  become: true
+  ansible.builtin.user:
+    create_home: false
+    name: "{{ vector_os_user }}"
+
+- name: Vector | Create Vector data_dir
+  become: true
+  ansible.builtin.file:
+    path: "{{ vector_data_dir }}"
+    state: directory
+    mode: "0755"
+    owner: "{{ vector_os_user }}"
+    group: "{{ vector_os_group }}"

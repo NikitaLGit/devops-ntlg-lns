@@ -1,0 +1,26 @@
+---
+data_dir: {{ vector_data_dir }}
+
+# Random Syslog-formatted logs
+sources:
+  dummy_logs:
+    type: demo_logs
+    format: syslog
+    interval: 1
+
+
+# Save parsed logs to Clickhouse
+sinks:
+  clickhouse_logs:
+    type: clickhouse
+    inputs:
+      - dummy_logs
+    database: {{ clickhouse_db }}
+    endpoint: "http://{{ clickhouse_url }}:8123"
+    table: {{ clickhouse_table }}
+    acknowledgements:
+      enabled: false
+    healthcheck:
+      enabled: false
+    compression: gzip
+    skip_unknown_fields: true

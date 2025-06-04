@@ -1,0 +1,8 @@
+---
+clickhouse_table: "logs_table"
+clickhouse_db: "logs"
+clickhouse_url: "51.250.95.11"
+vector_version: "0.47.0"
+vector_workdir: "/tmp/vector"
+vector_os_user: "vector"
+vector_os_group: "vector"
