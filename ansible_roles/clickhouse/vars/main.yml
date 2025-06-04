@@ -1,5 +1,0 @@
----
-clickhouse_packages:
-  - clickhouse-common-static
-  - clickhouse-client
-  - clickhouse-server
