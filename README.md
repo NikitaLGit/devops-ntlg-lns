@@ -31,6 +31,14 @@
     
 [Финальное задание раздела](https://github.com/NikitaLGit/devops-ntlg-lns/tree/main/terraform/final_terraform)
 
+## Ansible
+
+1. [Введение в Ansible](https://github.com/NikitaLGit/devops-ntlg-lns/tree/main/ansible/ansible-01-base)
+   
+2. [Работа с Playbook](https://github.com/NikitaLGit/devops-ntlg-lns/tree/main/ansible/ansible-02-playbook)
+   
+3. [Использование Ansible](https://github.com/NikitaLGit/devops-ntlg-lns/tree/main/ansible/ansible-03-yandex)
+
 ## Languages and Tools
 <div>
    <img src="https://github.com/devicons/devicon/blob/master/icons/mysql/mysql-original-wordmark.svg" title="MySQL"  alt="MySQL" width="80" height="80"/>&nbsp;
