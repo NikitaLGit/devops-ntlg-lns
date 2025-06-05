@@ -16,7 +16,7 @@ sinks:
     inputs:
       - dummy_logs
     database: {{ all_clickhouse_db }}
-    endpoint: {{ all_clickhouse_url }}
+    endpoint: "http://{{ all_clickhouse_url }}:8123"
     table: {{ all_clickhouse_table }}
     acknowledgements:
       enabled: false
