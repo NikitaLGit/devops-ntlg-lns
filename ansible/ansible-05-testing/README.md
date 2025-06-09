@@ -164,23 +164,77 @@ CRITICAL Ansible return code was 2, command was: ansible-playbook --inventory /h
 - name: Verify
   hosts: all
   gather_facts: false
-  vars:
-    vector_config_path: /etc/vector/vector.yaml
+
   tasks:
     - name: Get Vector version
-      ansible.builtin.command: "vector --version"
+      ansible.builtin.command: vector --version
       changed_when: false
       register: vector_version
-    - name: Assert Vector instalation
-      assert:
-        that: "'{{ vector_version.rc }}' == '0'"
+      failed_when: vector_version.rc != 0
+
+    - name: Vector version ouput
+      ansible.builtin.debug:
+        var: vector_version.stdout
 
     - name: Validation Vector configuration
-      ansible.builtin.command: "vector validate --no-environment --config-yaml /etc/vector/vector.yaml"
+      ansible.builtin.command: vector validate --no-environment --config-yaml /etc/vector/vector.yaml
       changed_when: false
       register: vector_validate
-    - name: Assert Vector validate config
-      assert:
-        that: "'{{ vector_validate.rc }}' == '0'"
+      failed_when: vector_validate.rc != 0
+
+    - name: Vector configuration ouput
+      ansible.builtin.debug:
+        var: vector_validate.stdout
 ```
 
+При тестировнии получаем:
+
+![image](https://github.com/user-attachments/assets/9901a775-55e6-43fa-a0d5-90b8f922d830)
+
+> [!TIP]
+> [Ссылка на релиз с заданием](https://github.com/NikitaLGit/vector-role/releases/tag/v1.0.1)
+
+## TOX
+> ### В очередной раз ничего не понятно, что требуется.
+> #### Почему в уроке запускаем на локальной машине, а тут просят на старом образе, который не работает? Много вопросов про это под уроком. На большинство нет нормального ответа и образ после этого так и не менялся. Что за подход?
+
+Добавил 2 файла:
+
+`tox-requirements.txt`:
+```yaml
+selinux
+lxml
+molecule
+molecule_podman
+jmespath
+```
+
+`tox.ini`:
+```yaml
+[tox]
+minversion = 1.8
+basepython = python3.6
+envlist = py{310}-ansible{217}
+skipsdist = true
+
+[testenv]
+passenv = *
+deps =
+    -r tox-requirements.txt
+    ansible217: ansible<3.0
+commands =
+    {posargs:molecule test -s compatibility --destroy always}
+```
+
+Версии `python` и `ansible`:
+
+![image](https://github.com/user-attachments/assets/242a3955-7f3f-4f06-82a9-78e2ceb30d27)
+
+Когда запускаю `tox` все просто зависает и при прерывании выдает ошибку:
+
+![image](https://github.com/user-attachments/assets/29c50dc3-2ac2-4e04-baa1-4221ea160452)
+![image](https://github.com/user-attachments/assets/ea5e1468-60fc-4104-9d89-2324c4d3e008)
+
+Если смотреть с ключем `-vvv`, то вроде идет что-то, но просто нереально долго и по итогу машина теряет ssh соединение.
+
+![image](https://github.com/user-attachments/assets/8dd40b61-3974-48b5-8d4d-eb992d2a8000)
