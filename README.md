@@ -39,16 +39,29 @@
    
 3. [Использование Ansible](https://github.com/NikitaLGit/devops-ntlg-lns/tree/main/ansible/ansible-03-yandex)
 
-## Languages and Tools
+## Tools
 <div>
-   <img src="https://github.com/devicons/devicon/blob/master/icons/mysql/mysql-original-wordmark.svg" title="MySQL"  alt="MySQL" width="80" height="80"/>&nbsp;
-   <img src="https://github.com/devicons/devicon/blob/master/icons/git/git-original-wordmark.svg" title="Git" **alt="Git" width="80" height="80"/>&nbsp;
-   <img src="https://github.com/devicons/devicon/blob/master/icons/python/python-original-wordmark.svg" title="Python" **alt="Python" width="80" height="80"/>&nbsp;
-   <img src="https://github.com/devicons/devicon/blob/master/icons/yaml/yaml-original.svg" title="YAML" **alt="YAML" width="80" height="80"/>&nbsp;
-   <img src="https://github.com/devicons/devicon/blob/master/icons/ansible/ansible-original.svg" title="ansible" **alt="ansible" width="80" height="80"/>&nbsp;
-   <img src="https://github.com/devicons/devicon/blob/master/icons/docker/docker-original-wordmark.svg" title="docker" **alt="docker" width="80" height="80">&nbsp;
-   <img src="https://github.com/devicons/devicon/blob/master/icons/terraform/terraform-original.svg" title="terraform" **alt="terraform" width="80" height="80">&nbsp;
-   <img src="https://github.com/devicons/devicon/blob/master/icons/vagrant/vagrant-original.svg" title="vagrant" **alt="vagrant" width="80" height="80">&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/docker/docker-original-wordmark.svg" title="docker" **alt="docker" width="80" height="80">&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/terraform/terraform-original.svg" title="terraform" **alt="terraform" width="80" height="80">&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/vagrant/vagrant-original.svg" title="vagrant" **alt="vagrant" width="80" height="80">&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/mysql/mysql-original-wordmark.svg" title="MySQL"  alt="MySQL" width="80" height="80"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/ansible/ansible-original.svg" title="ansible" **alt="ansible" width="80" height="80"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/ssh/ssh-original-wordmark.svg" title="ssh" **alt="ssh" width="80" height="80"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/ubuntu/ubuntu-original.svg" title="ubuntu" **alt="ubuntu" width="80" height="80"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/vscode/vscode-original.svg" title="vscode" **alt="vscode" width="80" height="80"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/centos/centos-original.svg" title="centos" **alt="centos" width="80" height="80"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/debian/debian-original.svg" title="debian" **alt="debian" width="80" height="80"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/github/github-original-wordmark.svg" title="github" **alt="github" width="80" height="80"/>&nbsp;
+</div>
+
+## Languages
+<div>
+  <img src="https://github.com/devicons/devicon/blob/master/icons/yaml/yaml-original.svg" title="YAML" **alt="YAML" width="80" height="80"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/nano/nano-plain-wordmark.svg" title="nano" **alt="nano" width="80" height="80"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/python/python-original-wordmark.svg" title="Python" **alt="Python" width="80" height="80"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/bash/bash-original.svg" title="bash" **alt="bash" width="80" height="80"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/git/git-original-wordmark.svg" title="Git" **alt="Git" width="80" height="80"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/json/json-plain.svg" title="json" **alt="json" width="80" height="80"/>&nbsp;
 </div>
 
 ## About
