@@ -192,7 +192,7 @@ CRITICAL Ansible return code was 2, command was: ansible-playbook --inventory /h
 ![image](https://github.com/user-attachments/assets/9901a775-55e6-43fa-a0d5-90b8f922d830)
 
 > [!TIP]
-> [Ссылка на релиз с заданием](https://github.com/NikitaLGit/vector-role/releases/tag/v1.0.1)
+> [Ссылка на релиз с заданием molecule](https://github.com/NikitaLGit/vector-role/releases/tag/v1.0.1)
 
 ## TOX
 > ### В очередной раз ничего не понятно, что требуется.
@@ -238,3 +238,6 @@ commands =
 Если смотреть с ключем `-vvv`, то вроде идет что-то, но просто нереально долго и по итогу машина теряет ssh соединение.
 
 ![image](https://github.com/user-attachments/assets/8dd40b61-3974-48b5-8d4d-eb992d2a8000)
+
+> [!TIP]
+> [Ссылка на релиз с заданием tox](https://github.com/NikitaLGit/vector-role/releases/tag/v1.0.2)
