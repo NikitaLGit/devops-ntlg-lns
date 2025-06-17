@@ -241,3 +241,17 @@ commands =
 
 > [!TIP]
 > [Ссылка на релиз с заданием tox](https://github.com/NikitaLGit/vector-role/releases/tag/v1.0.2)
+
+### Исправление 1
+<details>
+<summary> Текст исправления </summary>
+
+Перевел машину на `SSD`, потому что висит при запуске контейнера. `Ничего` не поменялось. По примеру работы, которую скинули получается это:
+
+![image](https://github.com/user-attachments/assets/a134e518-1e0a-48a5-9db7-a2fa25a04478)
+
+`SSD` уходит в пинг и нагрузку `100%`:
+
+![image](https://github.com/user-attachments/assets/745cca22-7555-427b-8a21-59b79e81a3da)
+
+</details>
