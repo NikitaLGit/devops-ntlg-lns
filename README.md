@@ -39,6 +39,14 @@
    
 3. [Использование Ansible](https://github.com/NikitaLGit/devops-ntlg-lns/tree/main/ansible/ansible-03-yandex)
 
+4. [Работа с roles](https://github.com/NikitaLGit/devops-ntlg-lns/tree/main/ansible/ansible-04-roles)
+
+5. [Тестирование roles](https://github.com/NikitaLGit/devops-ntlg-lns/tree/main/ansible/ansible-05-testing)
+
+## CI/CD
+
+1. [Жизненный цикл ПО](https://github.com/NikitaLGit/devops-ntlg-lns/tree/main/ci/ci-01-intro)
+
 ## Tools
 <div>
   <img src="https://github.com/devicons/devicon/blob/master/icons/docker/docker-original-wordmark.svg" title="docker" **alt="docker" width="80" height="80">&nbsp;
