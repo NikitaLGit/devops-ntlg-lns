@@ -52,6 +52,7 @@
   <img src="https://github.com/devicons/devicon/blob/master/icons/centos/centos-original.svg" title="centos" **alt="centos" width="80" height="80"/>&nbsp;
   <img src="https://github.com/devicons/devicon/blob/master/icons/debian/debian-original.svg" title="debian" **alt="debian" width="80" height="80"/>&nbsp;
   <img src="https://github.com/devicons/devicon/blob/master/icons/github/github-original-wordmark.svg" title="github" **alt="github" width="80" height="80"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/jira/jira-original.svg" title="jira" **alt="jira" width="80" height="80"/>&nbsp;
 </div>
 
 ## Languages
