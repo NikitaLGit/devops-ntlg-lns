@@ -255,3 +255,10 @@ commands =
 ![image](https://github.com/user-attachments/assets/745cca22-7555-427b-8a21-59b79e81a3da)
 
 </details>
+
+<details>
+<summary> Текст исправления 2 </summary>
+
+Начало что-то получаться, но все равно не понятно. Доставил докер, верисю питона. Молекула не ставится в контейнер.
+
+</details>
