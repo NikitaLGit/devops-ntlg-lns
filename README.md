@@ -61,6 +61,9 @@
   <img src="https://github.com/devicons/devicon/blob/master/icons/debian/debian-original.svg" title="debian" **alt="debian" width="80" height="80"/>&nbsp;
   <img src="https://github.com/devicons/devicon/blob/master/icons/github/github-original-wordmark.svg" title="github" **alt="github" width="80" height="80"/>&nbsp;
   <img src="https://github.com/devicons/devicon/blob/master/icons/jira/jira-original.svg" title="jira" **alt="jira" width="80" height="80"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/grafana/grafana-original-wordmark.svg" title="grafana" **alt="grafana" width="80" height="80"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/prometheus/prometheus-original-wordmark.svg" title="prometheus" **alt="prometheus" width="80" height="80"/>&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/influxdb/influxdb-original-wordmark.svg" title="influxdb" **alt="influxdb" width="80" height="80"/>&nbsp;
 </div>
 
 ## Languages
