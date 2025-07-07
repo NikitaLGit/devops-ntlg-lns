@@ -1,0 +1,109 @@
+# version: '3.3'
+services:
+#ELASTICSEARCH
+  elasticsearch:
+    container_name: elasticsearch
+    image: elasticsearch:7.17.18
+    environment:
+      - bootstrap.memory_lock=true
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9200:9200
+      - 9300:9300
+    stdin_open: true
+    tty: true
+    network_mode: bridge
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "50"
+# KIBANA
+  kibana:
+    container_name: kibana
+    image: kibana:7.17.18
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 5601:5601
+    links:
+      - elasticsearch:elasticsearch
+    depends_on:
+      - elasticsearch
+    stdin_open: true
+    tty: true
+    network_mode: bridge
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "50"
+#LOGSTASH
+  logstash:
+    container_name: logstash
+    image: logstash:7.17.18
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./configs/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:Z
+      - ./configs/logstash.template.json:/usr/share/logstash/templates/logstash.template.json:Z
+    ports:
+      - 5044:5044
+      - 5046:5046
+    links:
+      - elasticsearch:elasticsearch
+    depends_on:
+      - elasticsearch
+    stdin_open: true
+    tty: true
+    network_mode: bridge
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "50"
+#FILEBEAT
+  filebeat:
+    user: root
+    container_name: filebeat
+    image: elastic/filebeat:8.7.0
+    links:
+      - logstash:logstash
+    depends_on:
+      - logstash
+    volumes:
+      - /var/run/docker.sock:/host_docker/docker.sock
+      - /var/lib/docker:/host_docker/var/lib/docker
+      - ./mylog:/usr/share/filebeat/mylog
+      - ./configs/filebeat.yml:/usr/share/filebeat/filebeat.yml
+    command: ["--strict.perms=false"]
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    stdin_open: true
+    tty: true
+    network_mode: bridge
+    deploy:
+      mode: global
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "50"
+#SOME_APP
+  some_application:
+    image: library/python:3.9-alpine
+    container_name: some_app
+    volumes:
+      - ./pinger/:/opt/:Z
+    entrypoint: python3 /opt/run.py
