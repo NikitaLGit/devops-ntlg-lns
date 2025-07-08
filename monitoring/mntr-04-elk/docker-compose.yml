@@ -1,4 +1,4 @@
-# version: '3.3'
+version: '3.8'
 services:
 #ELASTICSEARCH
   elasticsearch:
@@ -8,6 +8,8 @@ services:
       - bootstrap.memory_lock=true
       - discovery.type=single-node
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+      - "ELASTIC_PASSWORD=P@$$w0rd"
     ulimits:
       memlock:
         soft: -1
@@ -15,9 +17,10 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
+    networks:
+      - elkstack
     stdin_open: true
     tty: true
-    network_mode: bridge
     logging:
       driver: "json-file"
       options:
@@ -27,35 +30,24 @@ services:
   kibana:
     container_name: kibana
     image: kibana:7.17.18
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
     ports:
       - 5601:5601
+    volumes:
+      - ./configs/kibana/config.yml:/usr/share/kibana/config/kibana.yml:ro
     links:
       - elasticsearch:elasticsearch
     depends_on:
       - elasticsearch
-    stdin_open: true
-    tty: true
-    network_mode: bridge
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "50"
+    networks:
+      - elkstack
 #LOGSTASH
   logstash:
     container_name: logstash
     image: logstash:7.17.18
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
     volumes:
-      - ./configs/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:Z
-      - ./configs/logstash.template.json:/usr/share/logstash/templates/logstash.template.json:Z
+      - ./configs/logstash/config.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./configs/logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:Z
+      - ./configs/logstash/logstash.template.json:/usr/share/logstash/templates/logstash.template.json:Z
     ports:
       - 5044:5044
       - 5046:5046
@@ -63,14 +55,9 @@ services:
       - elasticsearch:elasticsearch
     depends_on:
       - elasticsearch
-    stdin_open: true
-    tty: true
-    network_mode: bridge
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "50"
+    networks:
+      - elkstack
+
 #FILEBEAT
   filebeat:
     user: root
@@ -83,23 +70,13 @@ services:
     volumes:
       - /var/run/docker.sock:/host_docker/docker.sock
       - /var/lib/docker:/host_docker/var/lib/docker
-      - ./mylog:/usr/share/filebeat/mylog
-      - ./configs/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - ./configs/filebeat/config.yml:/usr/share/filebeat/filebeat.yml
     command: ["--strict.perms=false"]
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    stdin_open: true
-    tty: true
-    network_mode: bridge
     deploy:
       mode: global
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "50"
+    networks:
+      - elkstack
+
 #SOME_APP
   some_application:
     image: library/python:3.9-alpine
@@ -107,3 +84,9 @@ services:
     volumes:
       - ./pinger/:/opt/:Z
     entrypoint: python3 /opt/run.py
+    networks:
+      - elkstack
+
+networks:
+  elkstack:
+    driver: bridge
