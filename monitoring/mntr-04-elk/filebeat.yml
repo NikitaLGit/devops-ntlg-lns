@@ -1,10 +1,7 @@
 filebeat.inputs:
   - type: container
     paths:
-      - /var/lib/docker/containers/*/*.log
-    multiline.pattern: '^\d{4}-\d{2}-\d{2}'  # если нужны multiline
-    multiline.negate: true
-    multiline.match: after
+      - '/var/lib/docker/containers/*/*.log'
 
 processors:
   - add_docker_metadata:
@@ -16,8 +13,10 @@ processors:
       overwrite_keys: true
 
 output.logstash:
-  hosts: ["logstash:5046"]
-  protocol: tcp
+  hosts: ["logstash:5044"]
   
+setup.kibana:
+  host: "kibana:5601"
+
 logging.json: true
 logging.metrics.enabled: false

@@ -1,92 +1,98 @@
-version: '3.8'
+## docker-compose.yml ##
+
+version: '3'
+
+volumes:
+  elastic_data_warm: {}
+  elastic_data_hot: {}
+
 services:
-#ELASTICSEARCH
-  elasticsearch:
-    container_name: elasticsearch
-    image: elasticsearch:7.17.18
+
+  elasticsearch-hot:
+    container_name: elasticsearch-hot
+    hostname: elasticsearch-hot
+    image: elasticsearch:8.11.3
     environment:
-      - bootstrap.memory_lock=true
-      - discovery.type=single-node
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - xpack.security.enabled=false
-      - "ELASTIC_PASSWORD=P@$$w0rd"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
+      discovery.seed_hosts: elasticsearch-hot,elasticsearch-warm
+      cluster.initial_master_nodes: elastic-hot,elastic-warm
+      node.roles: master,data_content,data_hot
+      ES_JAVA_OPTS: "-Xmx512m -Xms512m"
+    volumes:
+      - elastic_data_hot:/usr/share/elasticsearch/data
+      - ./elasticsearch/hot/hot.yml:/usr/share/elasticsearch/config/elasticsearch.yml:rw
     ports:
-      - 9200:9200
-      - 9300:9300
+      - "9200:9200"
+      - "9300:9300"
     networks:
-      - elkstack
-    stdin_open: true
-    tty: true
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "50"
-# KIBANA
+      - elkstacknet
+    depends_on:
+      - elasticsearch-warm
+
+  elasticsearch-warm:
+    container_name: elasticsearch-warm
+    hostname: elasticsearch-warm
+    image: elasticsearch:8.11.3
+    environment:
+      discovery.seed_hosts: elasticsearch-hot,elasticsearch-warm
+      cluster.initial_master_nodes: elastic-hot,elastic-warm
+      node.roles: master,data_warm
+      ES_JAVA_OPTS: "-Xmx512m -Xms512m"
+    volumes:
+      - elastic_data_warm:/usr/share/elasticsearch/data
+      - ./elasticsearch/warm/warm.yml:/usr/share/elasticsearch/config/elasticsearch.yml:rw
+    networks:
+      - elkstacknet
+
   kibana:
     container_name: kibana
-    image: kibana:7.17.18
-    ports:
-      - 5601:5601
+    image: kibana:8.11.3
     volumes:
-      - ./configs/kibana/config.yml:/usr/share/kibana/config/kibana.yml:ro
-    links:
-      - elasticsearch:elasticsearch
+      - ./kibana.yml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - "5601:5601"
     depends_on:
-      - elasticsearch
+      - elasticsearch-hot
     networks:
-      - elkstack
-#LOGSTASH
+      - elkstacknet
+
   logstash:
     container_name: logstash
-    image: logstash:7.17.18
+    hostname: logstash
+    image: logstash:8.11.3
     volumes:
-      - ./configs/logstash/config.yml:/usr/share/logstash/config/logstash.yml:ro
-      - ./configs/logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:Z
-      - ./configs/logstash/logstash.template.json:/usr/share/logstash/templates/logstash.template.json:Z
+      - ./logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./logstash.conf:/usr/share/logstash/config/logstash.conf
+    command: logstash -f /usr/share/logstash/config/logstash.conf
     ports:
-      - 5044:5044
-      - 5046:5046
-    links:
-      - elasticsearch:elasticsearch
-    depends_on:
-      - elasticsearch
+      - "5044:5044"
+      - "9600:9600"
+      # - "7777:7777"
     networks:
-      - elkstack
+      - elkstacknet
 
-#FILEBEAT
   filebeat:
+    image: elastic/filebeat:8.11.3
     user: root
-    container_name: filebeat
-    image: elastic/filebeat:8.7.0
-    links:
-      - logstash:logstash
+    privileged: true
+    command: filebeat -e -strict.perms=false
+    volumes:
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:Z
+      - /var/lib/docker:/var/lib/docker:Z
+      - /var/run/docker.sock:/var/run/docker.sock:Z
     depends_on:
       - logstash
-    volumes:
-      - /var/run/docker.sock:/host_docker/docker.sock
-      - /var/lib/docker:/host_docker/var/lib/docker
-      - ./configs/filebeat/config.yml:/usr/share/filebeat/filebeat.yml
-    command: ["--strict.perms=false"]
-    deploy:
-      mode: global
     networks:
-      - elkstack
-
-#SOME_APP
+      - elkstacknet
+  
   some_application:
     image: library/python:3.9-alpine
-    container_name: some_app
+    container_name: localapp
     volumes:
       - ./pinger/:/opt/:Z
     entrypoint: python3 /opt/run.py
     networks:
-      - elkstack
+      - elkstacknet
 
 networks:
-  elkstack:
+  elkstacknet:
     driver: bridge
