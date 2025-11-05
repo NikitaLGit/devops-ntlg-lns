@@ -1,0 +1,1 @@
+Вывод `kubectl get pods -A`
