@@ -1,0 +1,45 @@
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   labels:
+#     app: task2
+#   name: hello-world
+#   namespace: default
+# spec:
+#   containers:
+#   - name: hello-world-spec
+#     image: gcr.io/kubernetes-e2e-test-images/echoserver:2.2
+#     imagePullPolicy: IfNotPresent
+#     ports:
+#       - protocol: TCP 
+#         containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: netology-web
+  name: netology-web 
+spec:
+  containers:
+  - name: echoserver
+    image: gcr.io/kubernetes-e2e-test-images/echoserver:2.2
+    imagePullPolicy: IfNotPresent
+    ports:
+      - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: netology-svc
+spec:
+  selector: 
+    app: netology-web
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
