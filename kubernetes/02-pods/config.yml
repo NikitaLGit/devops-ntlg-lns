@@ -1,7 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: netology-web
+  name: test
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -15,6 +16,12 @@ spec:
       containers:
       - name: echoserver
         image: gcr.io/kubernetes-e2e-test-images/echoserver:2.2
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
         ports:
         - containerPort: 8080
 
