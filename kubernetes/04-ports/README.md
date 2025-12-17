@@ -89,3 +89,72 @@ spec:
 <img width="1141" height="559" alt="image" src="https://github.com/user-attachments/assets/9020d51d-5e2f-4425-965b-65f832c5a507" />
 
 ## задание 2
+
+Развернем
+
+<img width="1191" height="194" alt="image" src="https://github.com/user-attachments/assets/bbf9b10e-2747-419a-9a54-b051e6e52e27" />
+
+ingress
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: frontback-ingress
+  namespace: netology-fb
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginxfront-svc
+            port:
+              number: 80
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: multiback-svc
+            port:
+              number: 80
+```
+
+deployment
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontback
+  namespace: netology-fb
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: frontback-app
+  template:
+    metadata:
+      labels:
+        app: frontback-app
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.25.4
+        ports:
+        - containerPort: 80
+      - name: multitool
+        image: wbitt/network-multitool
+        ports:
+        - containerPort: 8080
+        env: 
+          - name: HTTP_PORT
+            value: "8080"
+```
+
+Доступ по / есть, а по /api выдает 503 ошибку. не совсем понял
+
+<img width="801" height="612" alt="image" src="https://github.com/user-attachments/assets/1b2f5a57-9f08-47fc-9d51-dd8927832d41" />
