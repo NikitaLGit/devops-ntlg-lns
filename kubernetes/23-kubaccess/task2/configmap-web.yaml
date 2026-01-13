@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web-content # ИЗМЕНИТЕ: Укажите имя ConfigMap
+  namespace: netology # ОПЦИОНАЛЬНО: Укажите namespace, если не default
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Сформироана с помощью ConfigMap</title> # ИЗМЕНИТЕ: Заголовок страницы
+    </head>
+    <body>
+      <h1>Nginx работает</h1> # ДОБАВЬТЕ: Свой контент страницы
+    </body>
+    </html>

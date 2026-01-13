@@ -1,0 +1,15 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-viewer # ИЗМЕНИТЕ: Название роли
+  namespace: netology # ВАЖНО: Role работает только в указанном namespace
+rules:
+- apiGroups: [""] # КЛЮЧЕВОЙ МОМЕНТ: "" означает core API group
+  resources: # РАЗРЕШЕННЫЕ РЕСУРСЫ:
+    - pods # Доступ к просмотру подов
+    - pods/log # Доступ к логам подов
+  verbs: # РАЗРЕШЕННЫЕ ДЕЙСТВИЯ:
+    - get # Просмотр отдельных подов
+    - list # Список всех подов
+    - watch # Мониторинг изменений
+# ДОПОЛНИТЕЛЬНО: Можно добавить больше правил для других ресурсов

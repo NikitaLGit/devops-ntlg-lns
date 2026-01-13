@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-app
+  namespace: netology
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-app
+  template:
+    metadata:
+      labels:
+        app: nginx-app
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+          name: nginx-port
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /usr/share/nginx/html
+          readOnly: true
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: web-content
