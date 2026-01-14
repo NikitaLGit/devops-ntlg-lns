@@ -3,5 +3,8 @@
   connection: local
   gather_facts: false
 
+  collections:
+    - my_own_namespace.studyrole
+
   roles:
     - simple_file
