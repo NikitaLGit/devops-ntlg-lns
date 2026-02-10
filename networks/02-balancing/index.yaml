@@ -1,0 +1,3 @@
+#cloud-config
+runcmd:
+  - [ sh, -c, "echo '<img src='https://storage.yandexcloud.net/leonovbucket/york.jpg'>' > /var/www/html/index.html" ]
