@@ -1,0 +1,31 @@
+#cloud-config
+package_update: true
+packages:
+  - apache2
+write_files:
+  - path: /var/www/html/index.html
+    owner: www-data:www-data
+    permissions: '0644'
+    content: |
+      <!DOCTYPE html>
+      <html>
+      <head>
+          <meta charset="UTF-8">
+          <title>Домашнее задание</title>
+      </head>
+      <body>
+          <h1>Домашнее задание к занятию «Вычислительные мощности. Балансировщики нагрузки»</h1>
+          
+          <h2>Ссылка на картинку:</h2>
+          <p><a href="${image_url}" target="_blank">${image_url}</a></p>
+          
+          <h2>Картинка:</h2>
+          <img src="${image_url}" alt="Картинка из Object Storage" style="max-width: 100%;">
+          
+          <hr>
+      </body>
+      </html>
+runcmd:
+  - systemctl enable apache2
+  - systemctl start apache2
+  - systemctl restart apache2
